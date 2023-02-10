@@ -6,7 +6,7 @@ import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
 import PcollectionHome from './973PCollection/P_CollectionHome';
 import sdsu_logo from './static/sdsu_primary_logo.png'
-
+import LoginApp from './Login/LoginApp';
 
 
 function App() {
@@ -43,6 +43,7 @@ function App() {
       <div className='web-body'>
         <Router>
           <Routes>
+            <Route path='/login' element={<LoginApp />} exact />
             <Route path='/' element={<HomePage />} exact />
             <Route path="/allcollections" element={<CollectionListApp />} exact />
             <Route path="/vendors" element={<VendorListApp />} exact />
