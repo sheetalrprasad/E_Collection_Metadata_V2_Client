@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from '../api/axios';
+
+const ALL_COLLECTIONS_URL = "/allcollections";
 
 const CollectionListApp = () => {
     
@@ -10,7 +12,7 @@ const CollectionListApp = () => {
     useEffect(() => {
         const fetch = async () => {
           try {
-            const { data } = await Axios.get("http://localhost:3001/allcollections");
+            const { data } = await axios.get(ALL_COLLECTIONS_URL);
             setCollectionList(data);
           } catch (err) {
             console.error(err);

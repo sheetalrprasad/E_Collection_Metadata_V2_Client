@@ -12,3 +12,7 @@
 input {
     margin: 1%;
 }
+
+.error-msg {
+    color: red;
+}

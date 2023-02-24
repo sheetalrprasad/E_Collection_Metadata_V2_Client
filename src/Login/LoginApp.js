@@ -4,7 +4,9 @@ import AuthContext from "../context/AuthProvider";
 import "./LoginApp.css";
 
 import axios from '../api/axios';
+
 const LOGIN_URL = '/auth';
+
 
 const LoginApp = () =>{
 
@@ -26,7 +28,7 @@ const LoginApp = () =>{
     },[user, pwd])
 
     const handleSubmit = async (e) =>{
-        
+       
         try{
             const response = await axios.post(LOGIN_URL,
                     JSON.stringify({user, pwd}),
@@ -35,9 +37,11 @@ const LoginApp = () =>{
                         withCredentials: true
                     }
                 );
-                
-                console.log(JSON.stringify(response?.data));
+           
 
+                console.log(JSON.stringify(response?.data));
+                
+            
                 const accessToken = response?.data?.accessToken;
                 const roles = response?.data?.roles;
 
@@ -106,6 +110,7 @@ const LoginApp = () =>{
                                         Need an Account?<br/>
                                         Reach out to admin for creation of new account.
                                     </p>
+                                    <p className="error-msg">{ errMsg ? errMsg : ''}</p>
                                 </form>
                             </section>
                         </div>

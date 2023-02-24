@@ -1,6 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from '../api/axios';
+
+const VENDOR_URL = "/vendors";
 
 const VendorListApp = () => {
     
@@ -9,7 +11,7 @@ const VendorListApp = () => {
     useEffect(() => {
         const fetch = async () => {
           try {
-            const { data } = await Axios.get("http://localhost:3001/vendors");
+            const { data } = await axios.get(VENDOR_URL);
             console.log(data)
             setVendorList(data);
           } catch (err) {

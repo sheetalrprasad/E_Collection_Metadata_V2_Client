@@ -1,15 +1,19 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+import axios from '../api/axios';
+
+const E_COLLECTIONS_URL = "/ecollections";
 
 function EcollectionHome () {
 
     const [collectionList, setCollectionList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetch = async () => {
           try {
-            const { data } = await Axios.get("http://localhost:3001/ecollections");
+            const { data } = await axios.get(E_COLLECTIONS_URL);
             setCollectionList(data);
           } catch (err) {
             console.error(err);
@@ -18,6 +22,9 @@ function EcollectionHome () {
         fetch();
       }, []);
 
+      const redirectEdit = (data) => {
+        navigate("/ecollections-edit", {state: data });
+      };
 
       return <div className="collections table-responsive-sm">
         <table className='table table-bordered table-hover'>
@@ -41,8 +48,8 @@ function EcollectionHome () {
                     <td>{item["973NormRule"]? 'Y': 'N'}</td>
                     <td>{item["IZonly?"]? 'Y': 'N'}</td>
                     <td className="noteCollection">{item["Note"]}</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
+                    <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
+                    <td><button className="btn btn-link">Delete</button></td>
                     </tr>
                 ))}
 

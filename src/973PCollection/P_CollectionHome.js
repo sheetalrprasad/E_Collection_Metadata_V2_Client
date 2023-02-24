@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from '../api/axios';
 
+const P_COLLECTIONS_URL = "/pcollections";
 function PcollectionHome () {
 
     const [collectionList, setCollectionList] = useState([]);
@@ -9,7 +10,7 @@ function PcollectionHome () {
     useEffect(() => {
         const fetch = async () => {
           try {
-            const { data } = await Axios.get("http://localhost:3001/pcollections");
+            const { data } = await axios.get(P_COLLECTIONS_URL);
             setCollectionList(data);
           } catch (err) {
             console.error(err);
