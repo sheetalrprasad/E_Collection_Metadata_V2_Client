@@ -1,11 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import CollectionListApp from './CollectionsList/CollectionListApp';
 import VendorListApp from './Vendor/VendorListApp';
 import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
 import PcollectionHome from './973PCollection/P_CollectionHome';
 import EcollectionEdit from './973ECollection/E_CollectionEdit';
+import CollectionListApp from './CollectionsList/CollectionListApp';
+import Collection973ListApp from './Collection973/Collections973List';
 import sdsu_logo from './static/sdsu_primary_logo.png'
 import LoginApp from './Login/LoginApp';
 
@@ -33,6 +34,7 @@ function App() {
                 973
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a className="dropdown-item" href="/collectionList">All 973 Collections</a>
                 <a className="dropdown-item" href="/ecollections">973 E-Collections</a>
                 <a className="dropdown-item" href="/pcollections">973 P-Collections</a>
               </div>
@@ -48,6 +50,7 @@ function App() {
             <Route path='/' element={<HomePage />} exact />
             <Route path="/allcollections" element={<CollectionListApp />} exact />
             <Route path="/vendors" element={<VendorListApp />} exact />
+            <Route path="/collectionList" element={<Collection973ListApp />} exact />
             <Route path="/pcollections" element={<PcollectionHome />} exact />
             <Route path="/ecollections" element={<EcollectionHome />} exact />
             <Route path="/ecollections-edit" element={<EcollectionEdit />} exact />

@@ -23,7 +23,7 @@ function EcollectionHome () {
       }, []);
 
       const redirectEdit = (data) => {
-        navigate("/ecollections-edit", {state: data });
+        navigate("/ecollections-edit", { state: data });
       };
 
       return <div className="collections table-responsive-sm">
