@@ -2,9 +2,9 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./E_CollectionEdit.css";
-// import axios from '../api/axios';
+import axios from '../api/axios';
 
-// const E_COLLECTIONS_EDIT_URL = "/ecollections-edit";
+const E_COLLECTIONS_EDIT_URL = "/ecollections-edit";
 
 function EcollectionEdit () {
     
@@ -19,7 +19,27 @@ function EcollectionEdit () {
       setCollectionData(data);
     }, [data]);
 
+    
     const handleSubmit = async (e) =>{
+      
+          const form = document.querySelector("form");
+          const formData = new FormData(form);
+          
+          try{
+            const response = await axios.post(E_COLLECTIONS_EDIT_URL,
+                    JSON.stringify(formData),
+                    {
+                        headers: { 'Content-Type': `multipart/form-data; boundary=${form._boundary}`},
+                    }
+                );
+           
+
+                console.log(JSON.stringify(response?.data));
+                      
+        } catch(err){
+          console.log(err);
+        }
+    
     };
 
     const handleCheckboxChange = (e) => {
