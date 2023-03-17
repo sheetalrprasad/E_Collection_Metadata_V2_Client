@@ -10,36 +10,55 @@ function EcollectionEdit () {
     
     const [collectionData, setCollectionData] = useState();
     const [isChecked, setIsChecked] = useState(false);
+    const [msg, setMsg] =  useState(() => {
+      return localStorage.getItem('msg') || ''
+    });
 
     const location = useLocation();
     const data = location.state;
+    
+    useEffect(() => {
+      localStorage.setItem('msg', msg);
+    }, [msg]);
+
 
     useEffect(() => {
       console.log(data);
       setCollectionData(data);
     }, [data]);
-
     
     const handleSubmit = async (e) =>{
       
+          // 1. Create array for all checkboxes
+          // 2. Select only those checkboxes that are set
+          // 3. select data corresponding to these checkbox fields
+          // 4. send only these data in body
+          // 5. Update all these fields using old id
+
           const form = document.querySelector("form");
-          const formData = new FormData(form);
-          
+          console.log("form: ",form);
+          const formData = new FormData(e.target);
+          console.log("formData:",formData);
           try{
             const response = await axios.post(E_COLLECTIONS_EDIT_URL,
-                    JSON.stringify(formData),
+                    formData,
                     {
-                        headers: { 'Content-Type': `multipart/form-data; boundary=${form._boundary}`},
+                        headers: { 'Content-Type': `application/json`},
                     }
                 );
            
 
                 console.log(JSON.stringify(response?.data));
-                      
+                if (response?.status===200){
+                  setMsg("Update Successful.")
+                }else {
+                  setMsg("Update Failed.")
+                }
+                
         } catch(err){
           console.log(err);
         }
-    
+
     };
 
     const handleCheckboxChange = (e) => {
@@ -78,7 +97,7 @@ function EcollectionEdit () {
                 <h3>Modify</h3>
                 <p>Check the field that you would like to change first and enter the new value.</p>
 
-                <form id="modifye973" onSubmit={(e) => handleSubmit(e) } method="post" className="form-horizontal">
+                <form id="modifye973" onSubmit={(e) => handleSubmit(e) } className="form-horizontal">
 
 
                   <div className="form-group">
@@ -156,7 +175,7 @@ function EcollectionEdit () {
             </div>
             ) : (
               <div>
-                <p>No Record Found</p>
+                {msg}
               </div>
             ) }
 
