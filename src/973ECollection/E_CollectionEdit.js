@@ -48,7 +48,7 @@ function EcollectionEdit () {
                 );
            
 
-                console.log(JSON.stringify(response?.data));
+                console.log(JSON.stringify(response?.status));
                 if (response?.status===200){
                   setMsg("Update Successful.")
                 }else {
@@ -104,7 +104,7 @@ function EcollectionEdit () {
                     <div className="col-sm-3">
                       <input type="checkbox" id="idcheck" name="idcheck" className="form-check-input" onChange={handleCheckboxChange} />
                       <label className="control-label col-sm-4" htmlFor="e973id">Collection ID:</label>
-                      <input type="number" className="form-control" name="e973id" id="e973id" value={collectionData["CollectionID"]} disabled/>
+                      <input type="number" className="form-control" name="e973id" id="e973id" value={collectionData["CollectionID"]}/>
                     </div> <br/>
                   </div>
 
@@ -161,7 +161,7 @@ function EcollectionEdit () {
                   </div>
                   <input type ="submit" className="btn btn-primary align-btn" disabled={!isChecked}/>
 
-                  <input type="hidden" name='oldID' value={collectionData["CollectionID"]}/><br/>
+                  <input type="hidden" name='oldID' value={collectionData["973Value"]}/><br/>
 
                   {/* To Develop */}
                   <div className="error-msg">
