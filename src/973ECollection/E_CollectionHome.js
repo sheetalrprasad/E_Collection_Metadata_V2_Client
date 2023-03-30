@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
 
 const E_COLLECTIONS_URL = "/ecollections";
+const E_COLLECTIONS_DELETE_URL = "/ecollections-delete";
 
 function EcollectionHome () {
 
@@ -24,6 +25,29 @@ function EcollectionHome () {
 
       const redirectEdit = (data) => {
         navigate("/ecollections-edit", { state: data });
+      };
+
+      const deleteRecord = (data) => {
+        console.log(data["973Value"]);
+        
+        async function deletePost() {
+          try {
+            const response = await axios.delete(E_COLLECTIONS_DELETE_URL+"/"+data["973Value"],
+              {
+                headers: { 'Content-Type': `application/json`},
+              }
+            );
+            if (response?.status===200){
+              alert("Delete Successful.");
+              window.location.reload(true);
+            }else {
+              alert("Delete Failed.")
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        deletePost();
       };
 
       return <div className="collections table-responsive-sm">
@@ -49,7 +73,7 @@ function EcollectionHome () {
                     <td>{item["IZonly?"]? 'Y': 'N'}</td>
                     <td className="noteCollection">{item["Note"]}</td>
                     <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
-                    <td><button className="btn btn-link">Delete</button></td>
+                    <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
                     </tr>
                 ))}
 

@@ -13,7 +13,7 @@ function EcollectionEdit () {
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
     });
-
+    const [textNote, setTextNote] = useState();
     const location = useLocation();
     const data = location.state;
     
@@ -26,15 +26,12 @@ function EcollectionEdit () {
       console.log(data);
       setCollectionData(data);
     }, [data]);
+
+    const handleTextChange = (e) => {
+      setTextNote(e.target.value);
+    }
     
     const handleSubmit = async (e) =>{
-      
-          // 1. Create array for all checkboxes
-          // 2. Select only those checkboxes that are set
-          // 3. select data corresponding to these checkbox fields
-          // 4. send only these data in body
-          // 5. Update all these fields using old id
-
           const form = document.querySelector("form");
           console.log("form: ",form);
           const formData = new FormData(e.target);
@@ -104,7 +101,7 @@ function EcollectionEdit () {
                     <div className="col-sm-3">
                       <input type="checkbox" id="idcheck" name="idcheck" className="form-check-input" onChange={handleCheckboxChange} />
                       <label className="control-label col-sm-4" htmlFor="e973id">Collection ID:</label>
-                      <input type="number" className="form-control" name="e973id" id="e973id" value={collectionData["CollectionID"]}/>
+                      <input type="number" className="form-control" name="e973id" id="e973id"/>
                     </div> <br/>
                   </div>
 
@@ -156,18 +153,21 @@ function EcollectionEdit () {
                     <div className="col-sm-3">
                       <input type="checkbox" id="notecheck" name="notecheck" className="form-check-input" onChange={handleCheckboxChange} />
                       <label className="control-label col-sm-8" htmlFor="e973note">Note:</label>
-                      <textarea type="text" name="e973note" id="e973note" className="form-control" rows="3"></textarea>
+                      <div className="text-area">
+                        <textarea type="text" name="e973note" id="e973note" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
+                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
+                      </div>
                     </div>
                   </div>
                   <input type ="submit" className="btn btn-primary align-btn" disabled={!isChecked}/>
 
                   <input type="hidden" name='oldID' value={collectionData["973Value"]}/><br/>
 
-                  {/* To Develop */}
-                  <div className="error-msg">
-                    <p id="msgfail1"  hidden="hidden">Please select at least one field to modify before submit.</p>
-                    <p id="msgfail2"  hidden="hidden">Enter new value for the checked fields</p>
-                  </div>
+                  { !isChecked ? (
+                  <div className="warn-msg">
+                    <p id="msg_warn">Please select at least one field to modify before submit.</p>
+                  </div>) : (<div></div>)
+                  }
 
                 </form>
               
