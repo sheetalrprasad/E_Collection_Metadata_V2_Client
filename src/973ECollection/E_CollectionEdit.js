@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./E_CollectionEdit.css";
+import "./E_Collection.css";
 import axios from '../api/axios';
 
 const E_COLLECTIONS_EDIT_URL = "/ecollections-edit";
@@ -90,11 +90,11 @@ function EcollectionEdit () {
                 </tbody>
               </table>
                 
-              <div className="modify-973-form">
+              <div className="modify-973E-form">
                 <h3>Modify</h3>
                 <p>Check the field that you would like to change first and enter the new value.</p>
 
-                <form id="modifye973" onSubmit={(e) => handleSubmit(e) } className="form-horizontal">
+                <form id="modifye973E" onSubmit={(e) => handleSubmit(e) } className="form-horizontal">
 
 
                   <div className="form-group">

@@ -1,4 +1,4 @@
-.modify-973-form{
+.modify-973P-form{
     text-align: left;
     padding: 1%;
 }
@@ -24,4 +24,14 @@
     margin-top: 15%;
     margin-left: 1%;
     height: 2%;
+}
+
+#filter-button, #cancel-button {
+    margin-left: 1px;
+    margin-top: 14%;
+}
+
+.add-973P-form{
+    text-align: left;
+    padding: 1%;
 }

@@ -5,10 +5,12 @@ import axios from '../api/axios';
 
 const E_COLLECTIONS_URL = "/ecollections";
 const E_COLLECTIONS_DELETE_URL = "/ecollections-delete";
+const E_COLLECTIONS_ADD_URL = "/ecollections-add";
 
 function EcollectionHome () {
 
     const [collectionList, setCollectionList] = useState([]);
+    const [collectionListOriginal, setCollectionListOriginal] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,6 +27,10 @@ function EcollectionHome () {
 
       const redirectEdit = (data) => {
         navigate("/ecollections-edit", { state: data });
+      };
+
+      const redirectAdd = () => {
+        navigate(E_COLLECTIONS_ADD_URL);
       };
 
       const deleteRecord = (data) => {
@@ -50,7 +56,34 @@ function EcollectionHome () {
         deletePost();
       };
 
+      const handleFilter = () => {
+        let searchString = document.getElementById("filter-input").value;
+        const filtered = collectionList.filter(item => (
+          item["973Value"].toLowerCase().includes(searchString.toLowerCase())
+        ));
+        setCollectionListOriginal(collectionList);
+        setCollectionList(filtered);
+      }
+
+      const handleCancelFilter = () => {
+        setCollectionList(collectionListOriginal);
+        document.getElementById("filter-input").value = "";
+      }
+
       return <div className="collections table-responsive-sm">
+
+
+        <div className="input-group mb-8">
+          <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+          <div className="input-group-addon2 ">
+            <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+            <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+          </div>
+        </div>
+
+        <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
+
+
         <table className='table table-bordered table-hover'>
             <tbody>
                 <tr className="table-primary" key='headers'>

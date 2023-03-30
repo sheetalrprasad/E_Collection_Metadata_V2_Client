@@ -1,0 +1,32 @@
+.modify-973E-form{
+    text-align: left;
+    padding: 1%;
+}
+
+.align-btn{
+    margin-left: 0%;
+}
+
+.warn-msg{
+    color: rgb(248, 190, 1);
+}
+
+.text-area{
+    display: flex;
+}
+
+.text-area > * {
+    flex: 0 0 auto;
+}
+
+
+#copy-button {
+    margin-top: 15%;
+    margin-left: 1%;
+    height: 2%;
+}
+
+.add-973E-form{
+    text-align: left;
+    padding: 1%;
+}

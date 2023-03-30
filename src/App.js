@@ -5,10 +5,13 @@ import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
 import PcollectionHome from './973PCollection/P_CollectionHome';
 import EcollectionEdit from './973ECollection/E_CollectionEdit';
+import PcollectionEdit from './973PCollection/P_CollectionEdit';
 import CollectionListApp from './CollectionsList/CollectionListApp';
 import Collection973ListApp from './Collection973/Collections973List';
 import sdsu_logo from './static/sdsu_primary_logo.png'
 import LoginApp from './Login/LoginApp';
+import PcollectionAddNew from './973PCollection/P_CollectionAddNew';
+import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
 
 
 function App() {
@@ -54,6 +57,9 @@ function App() {
             <Route path="/pcollections" element={<PcollectionHome />} exact />
             <Route path="/ecollections" element={<EcollectionHome />} exact />
             <Route path="/ecollections-edit" element={<EcollectionEdit />} exact />
+            <Route path="/ecollections-add" element={<EcollectionAddNew />} exact />
+            <Route path="/pcollections-edit" element={<PcollectionEdit />} exact />
+            <Route path="/pcollections-add" element={<PcollectionAddNew />} exact />
           </Routes>
         </Router>
       </div>
