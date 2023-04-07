@@ -25,7 +25,7 @@ function App() {
           <img src={sdsu_logo} width="250" height="30" alt="" />
         </a>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
               <a className="nav-link" href="/allcollections">E-Collections</a>
             </li>
@@ -42,6 +42,9 @@ function App() {
                 <a className="dropdown-item" href="/pcollections">973 P-Collections</a>
               </div>
             </li>
+          </ul>
+          <ul className="nav navbar-nav ms-auto">
+            <li className="nav-item"><a className="nav-link" href="/login"><i className="fas fa-sign-in-alt"></i> Login</a></li>
           </ul>
         </div>
       </nav>

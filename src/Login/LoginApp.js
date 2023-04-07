@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { useRef, useState, useEffect } from "react";
-import AuthContext from "../context/AuthProvider";
+
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginApp.css";
 
 import axios from '../api/axios';
@@ -10,25 +10,16 @@ const LOGIN_URL = '/auth';
 
 const LoginApp = () =>{
 
-    const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
+    const history = useNavigate();
 
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState();
-    const [success, setSuccess] = useState(false);
-
-    useEffect(()=> {
-        userRef.current.focus();
-    },[])
-
-    useEffect(()=> {
-        setErrMsg('');
-    },[user, pwd])
 
     const handleSubmit = async (e) =>{
-       
+        e.preventDefault();
         try{
             const response = await axios.post(LOGIN_URL,
                     JSON.stringify({user, pwd}),
@@ -40,16 +31,9 @@ const LoginApp = () =>{
            
 
                 console.log(JSON.stringify(response?.data));
+                localStorage.setItem('user', JSON.stringify(response?.data));
+                history('/');
                 
-            
-                const accessToken = response?.data?.accessToken;
-                const roles = response?.data?.roles;
-
-                setAuth({ user, pwd, roles, accessToken });
-
-                setUser('');
-                setPwd('');
-                setSuccess(true);
                 
         } catch(err){
             if (!err?.response) {
@@ -61,22 +45,13 @@ const LoginApp = () =>{
             } else {
                 setErrMsg("Login Failed");
             }
-            errRef.current.focus();
         }
-        
-        // e.preventDefault();
         
     }
 
     return (
         <div>
-            { success ? ( 
-                <section>
-                    <h1>You are logged In.</h1>
-                    <p><a href="/"> Home</a></p>
-                </section>
-                ) : (
-                        <div className="form-group login">
+            <div className="form-group login">
                             <section>
                                 <p ref={errRef} className={errMsg? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                                 <h1>Sign In</h1>
@@ -114,9 +89,7 @@ const LoginApp = () =>{
                                 </form>
                             </section>
                         </div>
-                    )
-                }
-        </div>
+            </div>
     )
     
 };
