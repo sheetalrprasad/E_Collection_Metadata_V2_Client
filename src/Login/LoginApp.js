@@ -1,12 +1,13 @@
 
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import "./LoginApp.css";
 
 import axios from '../api/axios';
 
 const LOGIN_URL = '/auth';
 
+axios.defaults.withCredentials = true;
 
 const LoginApp = () =>{
 
@@ -17,6 +18,7 @@ const LoginApp = () =>{
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState();
+
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -30,7 +32,7 @@ const LoginApp = () =>{
                     }
                 );
            
-                localStorage.setItem('user', JSON.stringify(response?.data));
+                localStorage.setItem('user', response.data);
                 setPwd('')
                 navigate('/allcollections');
                 
@@ -49,6 +51,16 @@ const LoginApp = () =>{
 
         
     }
+
+    useEffect(() => {
+        axios.get('/auth').then((response) => {
+            if(response.data.loggedIn === true){
+                localStorage.setItem('user', response.data);
+            } else{
+                redirect('/auth');
+            }
+        });
+    }, []);
 
     return (
         <div>

@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { useState } from 'react';
+import { useState } from 'react';
 import VendorListApp from './Vendor/VendorListApp';
 import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
@@ -16,12 +16,15 @@ import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
 
 function App() {
 
-  async function logout() {
-    localStorage.removeItem('user');
-    console.log(localStorage.getItem('user'));
-    // console.log(JSON.parse(localStorage.getItem('user')));
+  const [authenticated, setAuthenticated] = useState(false);
+
+  function logout() {
+      setAuthenticated(false);
+      localStorage.clear();
   }
-  // const [username, setUsername] = useState('');
+
+  
+
 
   return (
     <div className="App">
@@ -50,8 +53,8 @@ function App() {
             </li>
           </ul>
           <ul className="nav navbar-nav ms-auto">
-          { localStorage.getItem('user') ? (
-            <li className="nav-item"><a className="nav-link" href="/login" onClick={ () => logout() }>{JSON.parse(localStorage.getItem('user'))} - Logout</a></li>
+          { authenticated ? (
+            <li className="nav-item"><a className="nav-link" href="/login" onClick={ () => logout() }>Logout</a></li>
             ): (
             <li className="nav-item"><a className="nav-link" href="/login">Login</a></li>
             )}
@@ -63,10 +66,10 @@ function App() {
         <Router>
           <Routes>
             <Route path='/login' element={<LoginApp />} exact />
-            <Route path='/' element={<HomePage />} exact />
-            <Route path="/allcollections" element={<CollectionListApp />} exact />
+            <Route path='/'  element={<HomePage />} exact />
+            <Route path="/allcollections"  element={<CollectionListApp />} exact />
             <Route path="/vendors" element={<VendorListApp />} exact />
-            <Route path="/collectionList" element={<Collection973ListApp />} exact />
+            <Route path="/collectionList"  element={<Collection973ListApp />} exact />
             <Route path="/pcollections" element={<PcollectionHome />} exact />
             <Route path="/ecollections" element={<EcollectionHome />} exact />
             <Route path="/ecollections-edit" element={<EcollectionEdit />} exact />
