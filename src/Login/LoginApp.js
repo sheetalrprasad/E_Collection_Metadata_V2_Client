@@ -12,7 +12,7 @@ const LoginApp = () =>{
 
     const userRef = useRef();
     const errRef = useRef();
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
@@ -20,6 +20,7 @@ const LoginApp = () =>{
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
+
         try{
             const response = await axios.post(LOGIN_URL,
                     JSON.stringify({user, pwd}),
@@ -29,11 +30,9 @@ const LoginApp = () =>{
                     }
                 );
            
-
-                console.log(JSON.stringify(response?.data));
                 localStorage.setItem('user', JSON.stringify(response?.data));
-                history('/');
-                
+                setPwd('')
+                navigate('/allcollections');
                 
         } catch(err){
             if (!err?.response) {
@@ -46,6 +45,8 @@ const LoginApp = () =>{
                 setErrMsg("Login Failed");
             }
         }
+
+
         
     }
 
