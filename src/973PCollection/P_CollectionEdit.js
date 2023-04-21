@@ -44,8 +44,6 @@ function PcollectionEdit () {
                     }
                 );
            
-
-                console.log(JSON.stringify(response?.status));
                 if (response?.status===200){
                   setMsg("Update Successful.")
                 }else {

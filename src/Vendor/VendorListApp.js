@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 
 const VENDOR_URL = "/vendors";
@@ -7,6 +8,17 @@ const VENDOR_URL = "/vendors";
 const VendorListApp = () => {
     
     const [vendorList, setVendorList] = useState([]);
+    const [allowPage, setAllowPage] = useState(false);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('user');
+        if (loggedInUser) {
+            setAllowPage(true);
+        } else {
+            setAllowPage(false);
+            navigate("/login");
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const fetch = async () => {
@@ -21,7 +33,7 @@ const VendorListApp = () => {
         fetch();
       }, []);
 
-    
+    if(allowPage) {
     return <div className="collections table-responsive-sm">
         <table className='table table-bordered table-hover'>
             <tbody>
@@ -50,6 +62,7 @@ const VendorListApp = () => {
             </tbody>
         </table>
     </div>
+    }
 };
 
 export default VendorListApp;

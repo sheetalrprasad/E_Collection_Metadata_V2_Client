@@ -13,6 +13,17 @@ function PcollectionHome () {
     const [collectionList, setCollectionList] = useState([]);
     const [collectionListOriginal, setCollectionListOriginal] = useState([]);
     const navigate = useNavigate();
+    const [allowPage, setAllowPage] = useState(false);
+    
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('user');
+        if (loggedInUser) {
+            setAllowPage(true);
+        } else {
+            setAllowPage(false);
+            navigate("/login");
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const fetch = async () => {
@@ -52,6 +63,7 @@ function PcollectionHome () {
             }
           } catch (err) {
             console.error(err);
+            alert("Delete Failed.")
           }
         };
         deletePost();
@@ -71,39 +83,42 @@ function PcollectionHome () {
         document.getElementById("filter-input").value = "";
       }
 
-      return <div className="collections table-responsive-sm">
-        
-        <div className="input-group mb-8">
-          <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-          <div className="input-group-addon2 ">
-            <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-            <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+      if(allowPage){
+
+        return <div className="collections table-responsive-sm">
+          <h3>P-Collections with 973</h3>
+          <div className="input-group mb-8">
+            <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+            <div className="input-group-addon2 ">
+              <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+              <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+            </div>
           </div>
-        </div>
 
-        <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
+          <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
 
-        <table className='table table-bordered table-hover'>
-            <tbody>
-                <tr className="table-primary" key='headers'>
-                <th scope="col">Collection Name</th>
-                <th className="noteCollection" scope="col">Note</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-                </tr>
+          <table className='table table-bordered table-hover'>
+              <tbody>
+                  <tr className="table-primary" key='headers'>
+                  <th scope="col">Collection Name</th>
+                  <th className="noteCollection" scope="col">Note</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+                  </tr>
 
-                {collectionList.map((item, index) => (
-                    <tr key={index}>
-                    <td>{item["CollectionName"]}</td>
-                    <td className="noteCollection">{item["Note"]}</td>
-                    <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
-                    <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
-                    </tr>
-                ))}
+                  {collectionList.map((item, index) => (
+                      <tr key={index}>
+                      <td>{item["CollectionName"]}</td>
+                      <td className="noteCollection">{item["Note"]}</td>
+                      <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
+                      <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
+                      </tr>
+                  ))}
 
-            </tbody>
-        </table>
-    </div>
+              </tbody>
+          </table>
+      </div>
+}
 
 
 };
