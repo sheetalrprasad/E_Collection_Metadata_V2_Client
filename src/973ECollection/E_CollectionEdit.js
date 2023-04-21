@@ -44,8 +44,6 @@ function EcollectionEdit () {
                     }
                 );
            
-
-                console.log(JSON.stringify(response?.status));
                 if (response?.status===200){
                   setMsg("Update Successful.")
                 }else {
@@ -152,7 +150,7 @@ function EcollectionEdit () {
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="notecheck" name="notecheck" className="form-check-input" onChange={handleCheckboxChange} />
-                      <label className="control-label col-sm-8" htmlFor="e973note">Note:</label>
+                      <label className="control-label col-sm-8" htmlFor="e973note">Note</label>
                       <div className="text-area">
                         <textarea type="text" name="e973note" id="e973note" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
                         <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>

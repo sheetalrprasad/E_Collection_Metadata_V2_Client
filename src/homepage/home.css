@@ -1,0 +1,14 @@
+.home{
+    align-items: center;
+    margin: 5%;
+}
+
+.home img {
+    margin-top: 2%;
+}
+
+.link-to-login{
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 3%;
+}

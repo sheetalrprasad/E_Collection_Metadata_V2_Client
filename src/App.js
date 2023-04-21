@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import VendorListApp from './Vendor/VendorListApp';
 import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
@@ -8,11 +8,13 @@ import PcollectionHome from './973PCollection/P_CollectionHome';
 import EcollectionEdit from './973ECollection/E_CollectionEdit';
 import PcollectionEdit from './973PCollection/P_CollectionEdit';
 import CollectionListApp from './CollectionsList/CollectionListApp';
+import CollectionListEdit from './CollectionsList/CollectionListEdit';
 import Collection973ListApp from './Collection973/Collections973List';
 import sdsu_logo from './static/sdsu_primary_logo.png'
 import LoginApp from './Login/LoginApp';
 import PcollectionAddNew from './973PCollection/P_CollectionAddNew';
 import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
+
 
 function App() {
 
@@ -23,8 +25,12 @@ function App() {
       localStorage.clear();
   }
 
-  
-
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      setAuthenticated(true);
+    }
+  }, [authenticated]);
 
   return (
     <div className="App">
@@ -65,9 +71,10 @@ function App() {
       <div className='web-body'>
         <Router>
           <Routes>
-            <Route path='/login' element={<LoginApp />} exact />
+            <Route path='/login' element={<LoginApp setAuthenticated = {setAuthenticated} />} exact />
             <Route path='/'  element={<HomePage />} exact />
             <Route path="/allcollections"  element={<CollectionListApp />} exact />
+            <Route path="/allcollections-edit" element={<CollectionListEdit />} exact />
             <Route path="/vendors" element={<VendorListApp />} exact />
             <Route path="/collectionList"  element={<Collection973ListApp />} exact />
             <Route path="/pcollections" element={<PcollectionHome />} exact />

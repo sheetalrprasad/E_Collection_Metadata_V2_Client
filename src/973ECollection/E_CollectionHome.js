@@ -13,6 +13,18 @@ function EcollectionHome () {
     const [collectionListOriginal, setCollectionListOriginal] = useState([]);
     const navigate = useNavigate();
 
+    const [allowPage, setAllowPage] = useState(false);
+    
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('user');
+        if (loggedInUser) {
+            setAllowPage(true);
+        } else {
+            setAllowPage(false);
+            navigate("/login");
+        }
+    }, [navigate]);
+
     useEffect(() => {
         const fetch = async () => {
           try {
@@ -51,6 +63,7 @@ function EcollectionHome () {
             }
           } catch (err) {
             console.error(err);
+            alert("Delete Failed.")
           }
         };
         deletePost();
@@ -70,51 +83,53 @@ function EcollectionHome () {
         document.getElementById("filter-input").value = "";
       }
 
-      return <div className="collections table-responsive-sm">
+      if (allowPage) {
+        return <div className="collections table-responsive-sm">
+          
+          <h3>E-Collections with 973</h3>
 
-
-        <div className="input-group mb-8">
-          <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-          <div className="input-group-addon2 ">
-            <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-            <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+          <div className="input-group mb-8">
+            <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+            <div className="input-group-addon2 ">
+              <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+              <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+            </div>
           </div>
-        </div>
 
-        <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
-
-
-        <table className='table table-bordered table-hover'>
-            <tbody>
-                <tr className="table-primary" key='headers'>
-                <th scope="col">Collection ID</th>
-                <th scope="col">Collection Name</th>
-                <th scope="col">973 in Bib?</th>
-                <th scope="col">973 Norm Rule?</th>
-                <th scope="col">IZ Only?</th>
-                <th className="noteCollection" scope="col">Note</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-                </tr>
-
-                {collectionList.map((item, index) => (
-                    <tr key={index}>
-                    <td>{item["CollectionID"]}</td>
-                    <td>{item["973Value"]}</td>
-                    <td>{item["973inAllBIB"]? 'Y': 'N'}</td>
-                    <td>{item["973NormRule"]? 'Y': 'N'}</td>
-                    <td>{item["IZonly?"]? 'Y': 'N'}</td>
-                    <td className="noteCollection">{item["Note"]}</td>
-                    <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
-                    <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
-                    </tr>
-                ))}
-
-            </tbody>
-        </table>
-    </div>
+          <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
 
 
+          <table className='table table-bordered table-hover'>
+              <tbody>
+                  <tr className="table-primary" key='headers'>
+                  <th scope="col">Collection ID</th>
+                  <th scope="col">Collection Name</th>
+                  <th scope="col">973 in Bib?</th>
+                  <th scope="col">973 Norm Rule?</th>
+                  <th scope="col">IZ Only?</th>
+                  <th className="noteCollection" scope="col">Note</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+                  </tr>
+
+                  {collectionList.map((item, index) => (
+                      <tr key={index}>
+                      <td>{item["CollectionID"]}</td>
+                      <td>{item["973Value"]}</td>
+                      <td>{item["973inAllBIB"]? 'Y': 'N'}</td>
+                      <td>{item["973NormRule"]? 'Y': 'N'}</td>
+                      <td>{item["IZonly?"]? 'Y': 'N'}</td>
+                      <td className="noteCollection">{item["Note"]}</td>
+                      <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
+                      <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
+                      </tr>
+                  ))}
+
+              </tbody>
+          </table>
+      </div>
+
+      }
 };
 
 export default EcollectionHome;

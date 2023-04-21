@@ -1,6 +1,5 @@
-
-import { useEffect, useRef, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginApp.css";
 
 import axios from '../api/axios';
@@ -9,16 +8,24 @@ const LOGIN_URL = '/auth';
 
 axios.defaults.withCredentials = true;
 
-const LoginApp = () =>{
+const LoginApp = ({setAuthenticated}) =>{
 
-    const userRef = useRef();
-    const errRef = useRef();
     const navigate = useNavigate();
 
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState();
-
+    const [loggedIn,setLoggedIn] = useState(false);
+    
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('user');
+        if (loggedInUser) {
+            setLoggedIn(true);
+            navigate('/');
+        } else {
+            setLoggedIn(false);
+        }
+    }, [navigate]);
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -32,9 +39,11 @@ const LoginApp = () =>{
                     }
                 );
            
-                localStorage.setItem('user', response.data);
+                localStorage.setItem('user', response.data[0].Name);
                 setPwd('')
-                navigate('/allcollections');
+                navigate('/');
+                setLoggedIn(true);
+                setAuthenticated(true);
                 
         } catch(err){
             if (!err?.response) {
@@ -46,65 +55,56 @@ const LoginApp = () =>{
             } else {
                 setErrMsg("Login Failed");
             }
+            setLoggedIn(false);
+            setAuthenticated(false);
         }
 
 
         
     }
 
-    useEffect(() => {
-        axios.get('/auth').then((response) => {
-            if(response.data.loggedIn === true){
-                localStorage.setItem('user', response.data);
-            } else{
-                redirect('/auth');
-            }
-        });
-    }, []);
+      if (!loggedIn) {
+            return (
+                <div>
+                    <div className="form-group login">
+                                    <section>
+                                        <h1>Sign In</h1>
+                                        <form onSubmit={(e) => handleSubmit(e) }>
+                                            
+                                            <label htmlFor="username">Username:</label>
+                                            <input 
+                                                type="text" 
+                                                id="username"
+                                                className="form-control" 
+                                                autoComplete="off" 
+                                                onChange={(e) => setUser(e.target.value)}
+                                                value={user}
+                                                required
+                                            />
 
-    return (
-        <div>
-            <div className="form-group login">
-                            <section>
-                                <p ref={errRef} className={errMsg? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                                <h1>Sign In</h1>
-                                <form onSubmit={(e) => handleSubmit(e) }>
-                                    
-                                    <label htmlFor="username">Username:</label>
-                                    <input 
-                                        type="text" 
-                                        id="username"
-                                        className="form-control" 
-                                        ref={userRef} 
-                                        autoComplete="off" 
-                                        onChange={(e) => setUser(e.target.value)}
-                                        value={user}
-                                        required
-                                    />
+                                            <label htmlFor="password">Password:</label>
+                                            <input 
+                                                type="password" 
+                                                id="password" 
+                                                className="form-control"
+                                                onChange={(e) => setPwd(e.target.value)}
+                                                value={pwd}
+                                                required
+                                            />
 
-                                    <label htmlFor="password">Password:</label>
-                                    <input 
-                                        type="password" 
-                                        id="password" 
-                                        className="form-control"
-                                        onChange={(e) => setPwd(e.target.value)}
-                                        value={pwd}
-                                        required
-                                    />
+                                            <button type="submit" className="btn btn-primary login-button">Sign In</button>
 
-                                    <button type="submit" className="btn btn-primary login-button">Sign In</button>
-
-                                    <p>
-                                        Need an Account?<br/>
-                                        Reach out to admin for creation of new account.
-                                    </p>
-                                    <p className="error-msg">{ errMsg ? errMsg : ''}</p>
-                                </form>
-                            </section>
-                        </div>
-            </div>
-    )
-    
+                                            <p>
+                                                Need an Account?<br/>
+                                                Reach out to admin for creation of new account.
+                                            </p>
+                                            <p className="error-msg">{ errMsg ? errMsg : ''}</p>
+                                        </form>
+                                    </section>
+                                </div>
+                    </div>
+            )
+            
+        } 
 };
-
 export default LoginApp;
