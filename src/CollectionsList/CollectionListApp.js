@@ -84,6 +84,16 @@ const CollectionListApp = () => {
         document.getElementById("filter-input").value = "";
       }
 
+      const handlePerpetual = (data) => {
+        if (data["Perpetual?"] === 1) {
+          return "Y";
+        } else if (data["Perpetual?"] === 2) {
+          return "Some";
+        } else {
+          return "N";
+        }
+      }
+
 
 
     if (allowPage) {
@@ -129,7 +139,7 @@ const CollectionListApp = () => {
                       <td>{item["Bib Source"]}</td>
                       <td>{item["Update Frequency"]}</td>
                       <td>{item["Active?"]? 'Y': 'N'}</td>
-                      <td>{item["Perpetual?"]? 'Y': 'N'}</td>
+                      <td>{handlePerpetual(item)}</td>
                       <td>{item["Aggregator?"]? 'Y': 'N'}</td>
                       <td>{item["Data Sync?"]? 'Y': 'N'}</td>
                       <td>{item["OA?"]? 'Y': 'N'}</td>

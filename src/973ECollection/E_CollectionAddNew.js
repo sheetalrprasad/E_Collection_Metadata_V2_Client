@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./E_Collection.css";
 import axios from '../api/axios';
 
@@ -7,45 +7,43 @@ const E_COLLECTIONS_ADD_URL = "/ecollections-add";
 
 function EcollectionAddNew () {
     
-    const [msg, setMsg] =  useState(() => {
-      return localStorage.getItem('msg') || ''
-    });
-    
-    useEffect(() => {
-      localStorage.setItem('msg', msg);
-    }, [msg]);
-
+    const navigate = useNavigate();
     
     const handleSubmit = async (e) =>{
-          const form = document.querySelector("form");
-          console.log("form: ",form);
-          const formData = new FormData(e.target);
-          console.log("formData:",formData);
-          try{
-            const response = await axios.post(E_COLLECTIONS_ADD_URL,
-                    formData,
-                    {
-                        headers: { 'Content-Type': `application/json`},
-                    }
-                );
-           
 
-                console.log(JSON.stringify(response?.status));
-                if (response?.status===200){
-                  setMsg("Update Successful.")
-                }else {
-                  setMsg("Update Failed.")
-                }
-                
-        } catch(err){
-          console.log(err);
-        }
+    e.preventDefault();
+    const form = document.querySelector("form");
+    console.log("form: ",form);
+    const formData = new FormData(e.target);
+    console.log("formData:",formData);
+    try{
+      const response = await axios.post(E_COLLECTIONS_ADD_URL,
+              formData,
+              {
+                  headers: { 'Content-Type': `application/json`},
+              }
+          );
+      
 
-    };
+          console.log(JSON.stringify(response?.status));
+          if (response?.status===200){
+            alert("Add Successful.");
+            navigate("/ecollections");
+            
+          }else {
+            alert("Add Failed.")
+          }
+          
+    } catch(err){
+      console.log(err);
+    }
+    
+  };
 
 
       return (
         <div className="collections table-responsive-sm">
+          
           <h2>Add E Record</h2>
                 
               <div className="add-973E-form">
@@ -109,7 +107,7 @@ function EcollectionAddNew () {
                 </form>
               
               </div>
-            </div>
+              </div>
     )
 };
 

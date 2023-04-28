@@ -1,44 +1,55 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CollectionListApp.css";
 import axios from '../api/axios';
 
 const E_COLLECTIONS_ADD_URL = "/allcollections-add";
+const ALL_VENDOR_NAME_URL = "/vendors-name";
 
 function CollectionListAddNew () {
     
-    const [msg, setMsg] =  useState(() => {
-      return localStorage.getItem('msg') || ''
-    });
-    
+    const [vendorNames, setVendorNames] = useState([]);
+    const navigate = useNavigate();
+
     useEffect(() => {
-      localStorage.setItem('msg', msg);
-    }, [msg]);
+        const fetch = async () => {
+            try {
+              const { data } = await axios.get(ALL_VENDOR_NAME_URL);
+              setVendorNames(data);
+            } catch (err) {
+              console.error(err);
+            }
+          };
+          fetch();
+    }, []);
 
     
     const handleSubmit = async (e) =>{
-          const form = document.querySelector("form");
-          console.log("form: ",form);
-          const formData = new FormData(e.target);
-          console.log("formData:",formData);
-          try{
-            const response = await axios.post(E_COLLECTIONS_ADD_URL,
-                    formData,
-                    {
-                        headers: { 'Content-Type': `application/json`},
-                    }
-                );
-           
-
-                console.log(JSON.stringify(response?.status));
-                if (response?.status===200){
-                  setMsg("Added Successful.")
-                }else {
-                  setMsg("Add Failed.")
+        e.preventDefault();
+        const form = document.querySelector("form");
+        console.log("form: ",form);
+        const formData = new FormData(e.target);
+        console.log("formData:",formData);
+        try{
+        const response = await axios.post(E_COLLECTIONS_ADD_URL,
+                formData,
+                {
+                    headers: { 'Content-Type': `application/json`},
                 }
-                
+            );
+        
+
+            console.log(JSON.stringify(response?.status));
+            if (response?.status===200){
+                alert("Add Successful.");
+                navigate("/allcollections");
+            }else {
+                alert("Add Failed.");
+            }
+            
         } catch(err){
-          console.log(err);
+            console.log(err);
         }
 
     };
@@ -67,12 +78,10 @@ function CollectionListAddNew () {
                     </div><br/>
                 </div>
 
-                {/* to do multi-select */}
                 <div className="form-group">
                     <div className="col-sm-3">
                     <label className="control-label col-sm-4" htmlFor="resourceType">Resouce Type</label>
                     
-                    {/* <Multiselect options={resourceTypeData} displayValue="Resource" id="resourceType" name="resourceType" /> */}
                     <select name="resourceType" id="resourceType"  class="form-select" multiple>
                         <option value="book">Book</option>
                         <option value="audio">Audio</option>
@@ -96,7 +105,7 @@ function CollectionListAddNew () {
                         <option value="WCM">WCM</option>
                         <option value="OCLC">OCLC</option>
                         <option value="vendor">Vendor</option>
-                        <option value="?">?</option>
+                        <option value="-">?</option>
                     </select>
                     </div><br/>
                 </div>
@@ -107,7 +116,7 @@ function CollectionListAddNew () {
                     <select name="updateFreq" id="updateFreq" className="form-select">
                         <option value="monthly">Monthly</option>
                         <option value="one time">One time</option>
-                        <option value="?">?</option>
+                        <option value="-">?</option>
                     </select>
                     </div><br/>
                 </div>
@@ -173,13 +182,15 @@ function CollectionListAddNew () {
                     </div><br/>
                 </div>
 
-                {/* get from db */}
+               
                 <div className="form-group">
                     <div className="col-sm-3">
                     <label className="control-label col-sm-4" htmlFor="vendor">Vendor</label>
                     <select name="vendor" id="vendor" className="form-select">
-                        {/* <option value="1">Yes</option>
-                        <option value="0">No</option> */}
+                        <option value="-">?</option>
+                        {
+                            vendorNames.map(vendor => <option key={vendor['Vendor Name']} value={vendor['Vendor Name']}>{vendor['Vendor Name']} </option>)
+                        }
                     </select>
                     </div><br/>
                 </div>

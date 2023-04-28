@@ -32,24 +32,25 @@ function EcollectionEdit () {
     }
     
     const handleSubmit = async (e) =>{
-          const form = document.querySelector("form");
-          console.log("form: ",form);
-          const formData = new FormData(e.target);
-          console.log("formData:",formData);
-          try{
-            const response = await axios.post(E_COLLECTIONS_EDIT_URL,
-                    formData,
-                    {
-                        headers: { 'Content-Type': `application/json`},
-                    }
-                );
-           
-                if (response?.status===200){
-                  setMsg("Update Successful.")
-                }else {
-                  setMsg("Update Failed.")
-                }
-                
+
+        const form = document.querySelector("form");
+        console.log("form: ",form);
+        const formData = new FormData(e.target);
+    
+        try{
+          const response = await axios.post(E_COLLECTIONS_EDIT_URL,
+                  formData,
+                  {
+                      headers: { 'Content-Type': `application/json`},
+                  }
+              );
+              
+              if (response?.status===200){
+                setMsg("Update Successful.")
+              }else {
+                setMsg("Update Failed.")
+              }
+              
         } catch(err){
           console.log(err);
         }
