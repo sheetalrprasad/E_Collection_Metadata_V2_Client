@@ -9,6 +9,7 @@ import EcollectionEdit from './973ECollection/E_CollectionEdit';
 import PcollectionEdit from './973PCollection/P_CollectionEdit';
 import CollectionListApp from './CollectionsList/CollectionListApp';
 import CollectionListEdit from './CollectionsList/CollectionListEdit';
+import CollectionListAddNew from './CollectionsList/CollectionListAddNew';
 import Collection973ListApp from './Collection973/Collections973List';
 import sdsu_logo from './static/sdsu_primary_logo.png'
 import LoginApp from './Login/LoginApp';
@@ -75,6 +76,7 @@ function App() {
             <Route path='/'  element={<HomePage />} exact />
             <Route path="/allcollections"  element={<CollectionListApp />} exact />
             <Route path="/allcollections-edit" element={<CollectionListEdit />} exact />
+            <Route path="/allcollections-add" element={<CollectionListAddNew />} exact />
             <Route path="/vendors" element={<VendorListApp />} exact />
             <Route path="/collectionList"  element={<Collection973ListApp />} exact />
             <Route path="/pcollections" element={<PcollectionHome />} exact />

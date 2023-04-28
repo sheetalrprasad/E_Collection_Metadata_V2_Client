@@ -7,11 +7,12 @@ import axios from '../api/axios';
 import "./CollectionListApp.css";
 
 const ALL_COLLECTIONS_EDIT_URL = "/allcollections-edit";
-
+const ALL_VENDOR_NAME_URL = "/vendors-name";
 
 const CollectionListEdit = () => {
     
     const [collectionData, setCollectionData] = useState();
+    const [vendorNames, setVendorNames] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
@@ -24,6 +25,17 @@ const CollectionListEdit = () => {
       localStorage.setItem('msg', msg);
     }, [msg]);
 
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+              const { data } = await axios.get(ALL_VENDOR_NAME_URL);
+              setVendorNames(data);
+            } catch (err) {
+              console.error(err);
+            }
+          };
+          fetch();
+    }, []);
 
     useEffect(() => {
       console.log(data);
@@ -70,18 +82,8 @@ const CollectionListEdit = () => {
       setIsChecked(e.target.checked);
     };
 
-    // const resourceTypeData = [ 
-    //     {Resource: "Book", id: "book"},
-    //     {Resource: "Audio", id: "audio"},
-    //     {Resource: "Streaming Audio", id: "streaming audio"},
-    //     {Resource: "Video", id: "video"},
-    //     {Resource: "Streaming Video", id: "streaming video"},
-    //     {Resource: "Journal", id: "journal"},
-    //     {Resource: "Newspaper", id: "newspaper"},
-    //     {Resource: "Gov Doc", id: "govdoc"},
-    //     {Resource: "Master Thesis", id: "masterthesis"},
-    // ]
-
+    // const vendors = vendorNames.map(vendors => vendors)
+    console.log("vendorNames: ",vendorNames);
 
       return <div className="collections table-responsive-sm">
 
@@ -148,14 +150,12 @@ const CollectionListEdit = () => {
                     </div><br/>
                 </div>
 
-                {/* to do multi-select */}
                 <div className="form-group">
                     <div className="col-sm-3">
                     <input type="checkbox" id="resourcecheck" name="resourcecheck" className="form-check-input" onChange={handleCheckboxChange}/>
                     <label className="control-label col-sm-4" htmlFor="resourceType">Resouce Type</label>
                     
-                    {/* <Multiselect options={resourceTypeData} displayValue="Resource" id="resourceType" name="resourceType" /> */}
-                    <select name="resourceType" id="resourceType"  class="form-select" multiple>
+                    <select name="resourceType" id="resourceType"  className="form-select" multiple>
                         <option value="book">Book</option>
                         <option value="audio">Audio</option>
                         <option value="streaming audio">Streaming Audio</option>
@@ -179,7 +179,7 @@ const CollectionListEdit = () => {
                         <option value="WCM">WCM</option>
                         <option value="OCLC">OCLC</option>
                         <option value="vendor">Vendor</option>
-                        <option value="?">?</option>
+                        <option value="-">-</option>
                     </select>
                     </div><br/>
                 </div>
@@ -191,7 +191,7 @@ const CollectionListEdit = () => {
                     <select name="updateFreq" id="updateFreq" className="form-select">
                         <option value="monthly">Monthly</option>
                         <option value="one time">One time</option>
-                        <option value="?">?</option>
+                        <option value="-">-</option>
                     </select>
                     </div><br/>
                 </div>
@@ -263,14 +263,15 @@ const CollectionListEdit = () => {
                     </div><br/>
                 </div>
 
-{/* get from db */}
                 <div className="form-group">
                     <div className="col-sm-3">
                     <input type="checkbox" id="vendorcheck" name="vendorcheck" className="form-check-input" onChange={handleCheckboxChange} />
                     <label className="control-label col-sm-4" htmlFor="vendor">Vendor</label>
                     <select name="vendor" id="vendor" className="form-select">
-                        {/* <option value="1">Yes</option>
-                        <option value="0">No</option> */}
+                    <option value="-">-</option>
+                    {
+                        vendorNames.map(vendor => <option key={vendor['Vendor Name']} value={vendor['Vendor Name']}>{vendor['Vendor Name']} </option>)
+                    }
                     </select>
                     </div><br/>
                 </div>
