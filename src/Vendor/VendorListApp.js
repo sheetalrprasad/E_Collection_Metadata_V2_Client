@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { VENDOR_ADD_URL, VENDOR_DELETE_URL, VENDOR_EDIT_URL, VENDOR_URL } from '../Constants/constants';
+<<<<<<< HEAD
 import './VendorListApp.css';
+=======
+>>>>>>> 3171c4ecbc69192b24c4448a1c11e86faf603429
 
 // const VENDOR_URL = "/vendors";
 // const VENDOR_ADD_URL = "/vendors-add";
@@ -93,8 +96,12 @@ const VendorListApp = () => {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
                     <a className="nav-item nav-link" href={ VENDOR_URL }>View/Edit</a>
+<<<<<<< HEAD
                     <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
                     {/* to do */}
+=======
+                    <a className="nav-item nav-link" onClick={() => setShowFilter(showFilter => !showFilter)} href="#">Filter & Export</a>
+>>>>>>> 3171c4ecbc69192b24c4448a1c11e86faf603429
                     <a className="nav-item nav-link" href={ VENDOR_ADD_URL }>Add New</a>
                     </div>
                 </div>
