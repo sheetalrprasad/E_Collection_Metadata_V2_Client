@@ -3,14 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { VENDOR_ADD_URL, VENDOR_DELETE_URL, VENDOR_EDIT_URL, VENDOR_URL } from '../Constants/constants';
-<<<<<<< HEAD
 import './VendorListApp.css';
-=======
->>>>>>> 3171c4ecbc69192b24c4448a1c11e86faf603429
-
-// const VENDOR_URL = "/vendors";
-// const VENDOR_ADD_URL = "/vendors-add";
-// const VENDOR_DELETE_URL = "/vendors-delete";
 
 const VendorListApp = () => {
     
