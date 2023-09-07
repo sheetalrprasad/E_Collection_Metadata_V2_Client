@@ -101,11 +101,7 @@ const CollectionListApp = () => {
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_URL }>View/Edit</a>
-<<<<<<< HEAD
               <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
-=======
-              <a className="nav-item nav-link" onClick={() => setShowFilter(showFilter => !showFilter)} href="#">Filter & Export</a>
->>>>>>> 3171c4ecbc69192b24c4448a1c11e86faf603429
               <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_ADD_URL }>Add New</a>
               <a className="nav-item nav-link" href="/">Search Alma</a>
             </div>
