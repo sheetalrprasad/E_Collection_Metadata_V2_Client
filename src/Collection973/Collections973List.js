@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import './Collections973List.css';
+import { ALL_973COLLECTIONS_URL } from "../Constants/constants";
 
-const ALL_COLLECTIONS_URL = "/all973collections";
 
 const Collection973ListApp = () => {
     
@@ -23,8 +23,9 @@ const Collection973ListApp = () => {
 
     useEffect(() => {
         const fetch = async () => {
+          console.log(ALL_973COLLECTIONS_URL)
           try {
-            const { data } = await axios.get(ALL_COLLECTIONS_URL);
+            const { data } = await axios.get(ALL_973COLLECTIONS_URL);
             setCollectionList(data);
           } catch (err) {
             console.error(err);

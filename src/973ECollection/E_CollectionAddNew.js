@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./E_Collection.css";
 import axios from '../api/axios';
+import { E_COLLECTIONS_URL } from "../Constants/constants";
 
 const E_COLLECTIONS_ADD_URL = "/ecollections-add";
 
@@ -43,8 +44,21 @@ function EcollectionAddNew () {
 
       return (
         <div className="collections table-responsive-sm">
+
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                    <a className="nav-item nav-link" href={ E_COLLECTIONS_URL }>View/Edit</a>
+                    <a className="nav-item nav-link" href={ E_COLLECTIONS_ADD_URL }>Add New</a>
+                    <a className="nav-item nav-link" href="/">Search Alma</a>
+                    </div>
+                </div>
+            </nav>
           
-          <h2>Add E Record</h2>
+          <h3>Add E Record</h3>
                 
               <div className="add-973E-form">
 

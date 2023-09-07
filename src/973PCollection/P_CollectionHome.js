@@ -2,16 +2,14 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
-
-const P_COLLECTIONS_URL = "/pcollections";
-const P_COLLECTIONS_DELETE_URL = "/pcollections-delete";
-const P_COLLECTIONS_ADD_URL = "/pcollections-add";
+import { P_COLLECTIONS_ADD_URL, P_COLLECTIONS_DELETE_URL, P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL } from '../Constants/constants';
 
 
 function PcollectionHome () {
 
     const [collectionList, setCollectionList] = useState([]);
     const [collectionListOriginal, setCollectionListOriginal] = useState([]);
+    const [showFilter, setShowFilter] = useState(false);
     const navigate = useNavigate();
     const [allowPage, setAllowPage] = useState(false);
     
@@ -38,11 +36,7 @@ function PcollectionHome () {
       }, []);
 
       const redirectEdit = (data) => {
-        navigate("/pcollections-edit", { state: data });
-      };
-
-      const redirectAdd = () => {
-        navigate(P_COLLECTIONS_ADD_URL);
+        navigate(P_COLLECTIONS_EDIT_URL, { state: data });
       };
 
       const deleteRecord = (data) => {
@@ -86,16 +80,33 @@ function PcollectionHome () {
       if(allowPage){
 
         return <div className="collections table-responsive-sm">
-          <h3>P-Collections with 973</h3>
-          <div className="input-group mb-8">
-            <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-            <div className="input-group-addon2 ">
-              <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-              <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
+              <a className="nav-item nav-link" href={ P_COLLECTIONS_URL }>View/Edit</a>
+              <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
+              <a className="nav-item nav-link" href={ P_COLLECTIONS_ADD_URL }>Add New</a>
+              <a className="nav-item nav-link" href="/">Search Alma</a>
             </div>
           </div>
+        </nav>
 
-          <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
+        {
+          showFilter  ? 
+            <div className="input-group mb-8">
+              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+              <div className="input-group-addon2 ">
+                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+              </div>
+            </div> : <></>
+        }
+
+          <h3>P-Collections with 973</h3>
 
           <table className='table table-bordered table-hover'>
               <tbody>

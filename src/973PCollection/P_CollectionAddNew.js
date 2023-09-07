@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "./P_Collection.css";
 import axios from '../api/axios';
+import { P_COLLECTIONS_URL } from "../Constants/constants";
 
 const P_COLLECTIONS_ADD_URL = "/pcollections-add";
 
@@ -45,7 +46,21 @@ function PcollectionAddNew () {
 
       return (
         <div className="collections table-responsive-sm">
-          <h2>Add New P Record</h2>
+
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                    <a className="nav-item nav-link" href={ P_COLLECTIONS_URL }>View/Edit</a>
+                    <a className="nav-item nav-link" href={ P_COLLECTIONS_ADD_URL }>Add New</a>
+                    <a className="nav-item nav-link" href="/">Search Alma</a>
+                    </div>
+                </div>
+            </nav>
+
+          <h3>Add New P Record</h3>
                 
               <div className="add-973P-form">
 

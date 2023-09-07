@@ -2,16 +2,14 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-
-const ALL_COLLECTIONS_URL = "/allcollections";
-const ALL_E_COLLECTIONS_ADD_URL = "/allcollections-add";
-const ALL_E_COLLECTIONS_DELETE_URL = "/allcollections-delete";
+import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_E_COLLECTIONS_DELETE_URL, ALL_E_COLLECTIONS_EDIT_URL } from "../Constants/constants";    
 
 const CollectionListApp = () => {
     
     const [collectionList, setCollectionList] = useState([]);
     const [collectionListOriginal, setCollectionListOriginal] = useState([]);
     const [allowPage, setAllowPage] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
     const navigate = useNavigate();
 
 
@@ -29,7 +27,7 @@ const CollectionListApp = () => {
     useEffect(() => {
         const fetch = async () => {
           try {
-            const { data } = await axios.get(ALL_COLLECTIONS_URL);
+            const { data } = await axios.get(ALL_E_COLLECTIONS_URL);
             setCollectionList(data);
           } catch (err) {
             console.error(err);
@@ -40,11 +38,7 @@ const CollectionListApp = () => {
 
 
       const redirectEdit = (data) => {
-        navigate("/allcollections-edit", { state: data });
-      };
-
-      const redirectAdd = () => {
-        navigate(ALL_E_COLLECTIONS_ADD_URL);
+        navigate(ALL_E_COLLECTIONS_EDIT_URL, { state: data });
       };
 
       const deleteRecord = (data) => {
@@ -95,21 +89,37 @@ const CollectionListApp = () => {
       }
 
 
-
     if (allowPage) {
       return <div className="collections table-responsive-sm">
 
-      <h3>All E-Collections</h3>
+       
 
-      <div className="input-group mb-8">
-        <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-        <div className="input-group-addon2 ">
-          <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-          <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
-        </div>
-      </div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
+              <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_URL }>View/Edit</a>
+              <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
+              <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_ADD_URL }>Add New</a>
+              <a className="nav-item nav-link" href="/">Search Alma</a>
+            </div>
+          </div>
+        </nav>
 
-      <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
+        {
+          showFilter  ? 
+            <div className="input-group mb-8">
+              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+              <div className="input-group-addon2 ">
+                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+              </div>
+            </div> : <></>
+        }
+
+        <h3>All E-Collections</h3>
 
           <table className='table table-bordered table-hover'>
               <tbody>

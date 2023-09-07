@@ -2,15 +2,13 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
-
-const E_COLLECTIONS_URL = "/ecollections";
-const E_COLLECTIONS_DELETE_URL = "/ecollections-delete";
-const E_COLLECTIONS_ADD_URL = "/ecollections-add";
+import { E_COLLECTIONS_ADD_URL, E_COLLECTIONS_DELETE_URL, E_COLLECTIONS_EDIT_URL, E_COLLECTIONS_URL } from '../Constants/constants';
 
 function EcollectionHome () {
 
     const [collectionList, setCollectionList] = useState([]);
     const [collectionListOriginal, setCollectionListOriginal] = useState([]);
+    const [showFilter, setShowFilter] = useState(false);
     const navigate = useNavigate();
 
     const [allowPage, setAllowPage] = useState(false);
@@ -38,11 +36,7 @@ function EcollectionHome () {
       }, []);
 
       const redirectEdit = (data) => {
-        navigate("/ecollections-edit", { state: data });
-      };
-
-      const redirectAdd = () => {
-        navigate(E_COLLECTIONS_ADD_URL);
+        navigate(E_COLLECTIONS_EDIT_URL, { state: data });
       };
 
       const deleteRecord = (data) => {
@@ -86,18 +80,34 @@ function EcollectionHome () {
       if (allowPage) {
         return <div className="collections table-responsive-sm">
           
-          <h3>E-Collections with 973</h3>
+        
 
-          <div className="input-group mb-8">
-            <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-            <div className="input-group-addon2 ">
-              <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-              <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
+              <a className="nav-item nav-link" href={ E_COLLECTIONS_URL }>View/Edit</a>
+              <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
+              <a className="nav-item nav-link" href={ E_COLLECTIONS_ADD_URL }>Add New</a>
+              <a className="nav-item nav-link" href="/">Search Alma</a>
             </div>
           </div>
+        </nav>
 
-          <button type="button" className="btn btn-secondary" onClick={ () => redirectAdd() }>Add New Item</button>
+        {
+          showFilter  ? 
+            <div className="input-group mb-8">
+              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+              <div className="input-group-addon2 ">
+                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+              </div>
+            </div> : <></>
+        }
 
+      <h3>E-Collections with 973</h3>
 
           <table className='table table-bordered table-hover'>
               <tbody>

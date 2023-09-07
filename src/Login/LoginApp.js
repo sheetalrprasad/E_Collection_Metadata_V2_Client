@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { LOGIN_URL, HOME_URL } from "../Constants/constants";
 import "./LoginApp.css";
 
 import axios from '../api/axios';
-
-const LOGIN_URL = '/auth';
 
 axios.defaults.withCredentials = true;
 
@@ -21,7 +20,7 @@ const LoginApp = ({setAuthenticated}) =>{
         const loggedInUser = localStorage.getItem('user');
         if (loggedInUser) {
             setLoggedIn(true);
-            navigate('/');
+            navigate(HOME_URL);
         } else {
             setLoggedIn(false);
         }
@@ -41,7 +40,7 @@ const LoginApp = ({setAuthenticated}) =>{
            
                 localStorage.setItem('user', response.data[0].Name);
                 setPwd('')
-                navigate('/');
+                navigate(HOME_URL);
                 setLoggedIn(true);
                 setAuthenticated(true);
                 

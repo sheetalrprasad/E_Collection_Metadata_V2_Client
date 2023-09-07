@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CollectionListApp.css";
 import axios from '../api/axios';
-
-const E_COLLECTIONS_ADD_URL = "/allcollections-add";
-const ALL_VENDOR_NAME_URL = "/vendors-name";
+import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_VENDOR_NAME_URL, E_COLLECTIONS_ADD_URL } from "../Constants/constants";
 
 function CollectionListAddNew () {
     
@@ -57,8 +55,22 @@ function CollectionListAddNew () {
 
       return (
         <div className="collections table-responsive-sm">
-          <h2>Add E Record</h2>
+
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                    <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_URL }>View/Edit</a>
+                    <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_ADD_URL }>Add New</a>
+                    <a className="nav-item nav-link" href="/">Search Alma</a>
+                    </div>
+                </div>
+            </nav>
                 
+            <h3>Add E Record</h3>
+
               <div className="add-973E-form">
 
               <form id="modifyEcollections" onSubmit={(e) => handleSubmit(e) } className="form-horizontal">
@@ -82,7 +94,7 @@ function CollectionListAddNew () {
                     <div className="col-sm-3">
                     <label className="control-label col-sm-4" htmlFor="resourceType">Resouce Type</label>
                     
-                    <select name="resourceType" id="resourceType"  class="form-select" multiple>
+                    <select name="resourceType" id="resourceType"  className="form-select" multiple>
                         <option value="book">Book</option>
                         <option value="audio">Audio</option>
                         <option value="streaming audio">Streaming Audio</option>

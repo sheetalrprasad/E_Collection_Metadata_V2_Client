@@ -14,3 +14,10 @@ table {
 .web-body{
   margin: 0.5%;
 }
+
+.nav-button-filter {
+  background: none !important;
+  border: none !important;
+  padding: 1 !important;
+  cursor: pointer;
+}
