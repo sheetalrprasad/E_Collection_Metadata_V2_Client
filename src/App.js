@@ -38,7 +38,7 @@ function App() {
 
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="/">
-          <img src={sdsu_logo} width="250" height="30" alt="" />
+          <img src={sdsu_logo} width="220" height="30" alt="" />
         </a>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav mr-auto">
