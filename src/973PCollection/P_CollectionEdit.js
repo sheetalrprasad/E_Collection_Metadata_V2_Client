@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./P_Collection.css";
 import axios from '../api/axios';
+import { P_COLLECTIONS_EDIT_URL } from '../Constants/constants';
 
-const P_COLLECTIONS_EDIT_URL = "/pcollections-edit";
 
 function PcollectionEdit () {
     

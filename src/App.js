@@ -15,6 +15,7 @@ import sdsu_logo from './static/sdsu_primary_logo.png'
 import LoginApp from './Login/LoginApp';
 import PcollectionAddNew from './973PCollection/P_CollectionAddNew';
 import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
+import VendorEdit from './Vendor/VendorEdit';
 
 
 function App() {
@@ -85,6 +86,7 @@ function App() {
             <Route path="/ecollections-add" element={<EcollectionAddNew />} exact />
             <Route path="/pcollections-edit" element={<PcollectionEdit />} exact />
             <Route path="/pcollections-add" element={<PcollectionAddNew />} exact />
+            <Route path="/vendor-edit" element={<VendorEdit />} exact />
           </Routes>
         </Router>
       </div>

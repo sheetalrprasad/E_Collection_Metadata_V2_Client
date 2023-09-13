@@ -1,14 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./E_Collection.css";
+import "./VendorListApp.css";
 import axios from '../api/axios';
-import { E_COLLECTIONS_EDIT_URL } from '../Constants/constants';
+import { VENDOR_EDIT_URL } from '../Constants/constants';
 
-
-function EcollectionEdit () {
+function VendorEdit () {
     
-    const [collectionData, setCollectionData] = useState();
+    const [vendorData, setVendorData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
@@ -24,7 +23,7 @@ function EcollectionEdit () {
 
     useEffect(() => {
       console.log(data);
-      setCollectionData(data);
+      setVendorData(data);
     }, [data]);
 
     const handleTextChange = (e) => {
@@ -38,7 +37,7 @@ function EcollectionEdit () {
         const formData = new FormData(e.target);
     
         try{
-          const response = await axios.post(E_COLLECTIONS_EDIT_URL,
+          const response = await axios.post(VENDOR_EDIT_URL,
                   formData,
                   {
                       headers: { 'Content-Type': `application/json`},
@@ -62,28 +61,30 @@ function EcollectionEdit () {
     };
 
       return (
-        <div className="collections table-responsive-sm">
+        <div className="vendors table-responsive-sm">
           <h2>Update Record</h2>
-          { collectionData ? (
+          { vendorData ? (
             <div>
               <table className='table table-bordered table-hover'>
                 <tbody>
                   <tr className="table-primary" key='headers'>
-                    <th scope="col">Collection ID</th>
-                    <th scope="col">Collection Name</th>
-                    <th scope="col">973 in Bib?</th>
-                    <th scope="col">973 Norm Rule?</th>
-                    <th scope="col">IZ Only?</th>
+                    <th scope="col">Vendor ID</th>
+                    <th scope="col">Vendor Name</th>
+                    <th scope="col">Vendor Name</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Password</th>
                     <th className="noteCollection" scope="col">Note</th>
+                    <th scope="col">Contact</th>
                   </tr>
 
                   <tr>
-                    <td>{collectionData["CollectionID"]}</td>
-                    <td>{collectionData["973Value"]}</td>
-                    <td>{collectionData["973inAllBIB"] ? 'Y' : 'N'}</td>
-                    <td>{collectionData["973NormRule"] ? 'Y' : 'N'}</td>
-                    <td>{collectionData["IZonly?"] ? 'Y' : 'N'}</td>
-                    <td className="noteCollection">{collectionData["Note"]}</td>
+                    <td>{vendorData["Vendor ID"]}</td>
+                    <td>{vendorData["Vendor Name"]}</td>
+                    <td>{vendorData["Vendor Web"]}</td>
+                    <td>{vendorData["Vendor Web UserName"]}</td>
+                    <td>{vendorData["Vendor Web PWD"]}</td>
+                    <td className="noteCollection">{vendorData["Note"]}</td>
+                    <td>{vendorData["Vendor Contact"]}</td>
                   </tr>
 
                 </tbody>
@@ -99,52 +100,40 @@ function EcollectionEdit () {
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="idcheck" name="idcheck" className="form-check-input" onChange={handleCheckboxChange} />
-                      <label className="control-label col-sm-4" htmlFor="e973id">Collection ID:</label>
-                      <input type="number" className="form-control" name="e973id" id="e973id"/>
+                      <label className="control-label col-sm-4" htmlFor="vendorId">Vendor ID:</label>
+                      <input type="number" className="form-control" name="vendorId" id="vendorId"/>
                     </div> <br/>
                   </div>
 
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="namecheck" name="namecheck" className="form-check-input" onChange={handleCheckboxChange}/>
-                      <label className="control-label col-sm-6" htmlFor="e973name">Collection Name in 973:</label>
-                      <input type="text" className="form-control" name="e973name" id="e973name"/>
+                      <label className="control-label col-sm-6" htmlFor="vendorName">Vendor Name:</label>
+                      <input type="text" className="form-control" name="vendorName" id="vendorName"/>
                     </div><br/>
                   </div>
 
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="bibcheck" name="bibcheck" className="form-check-input" onChange={handleCheckboxChange}/>
-                      <label className="control-label col-sm-4" htmlFor="e973bib">973 in All BIB?</label>
-                      <select name="e973bib" id="e973bib" className="form-select">
-                        <option value="3"> No Change Needed </option>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                      </select>
+                      <label className="control-label col-sm-4" htmlFor="vendorWeb">Vendor Web</label>
+                      <input type="text" className="form-control" name="vendorWeb" id="vendorWeb"/>
                     </div><br/>
                   </div>
 
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="nrcheck" name="nrcheck" className="form-check-input" onChange={handleCheckboxChange}/>
-                      <label className="control-label col-sm-4" htmlFor="e973nr">973 Norm Rule?</label>
-                      <select name="e973nr" id="e973nr" className="form-select">
-                        <option value="3">No Change Needed</option>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                      </select>
+                      <label className="control-label col-sm-4" htmlFor="userName">User Name</label>
+                      <input type="text" className="form-control" name="userName" id="userName"/>
                     </div><br/>
                   </div>
 
                   <div className="form-group">
                     <div className="col-sm-3">
                       <input type="checkbox" id="izcheck" name="izcheck" className="form-check-input" onChange={handleCheckboxChange} />
-                      <label className="control-label col-sm-4" htmlFor="e973iz">IZ Only?</label>
-                      <select name="e973iz" id="e973iz" className="form-select">
-                        <option value="3">No Change Needed</option>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                      </select>
+                      <label className="control-label col-sm-4" htmlFor="password">Password</label>
+                      <input type="text" className="form-control" name="password" id="password"/>
                     </div><br/>
                   </div>
 
@@ -154,13 +143,23 @@ function EcollectionEdit () {
                       <label className="control-label col-sm-8" htmlFor="e973note">Note</label>
                       <div className="text-area">
                         <textarea type="text" name="e973note" id="e973note" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
-                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
+                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(vendorData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
                       </div>
                     </div>
                   </div>
+
+                  <div className="form-group">
+                    <div className="col-sm-3">
+                      <input type="checkbox" id="contactcheck" name="contactcheck" className="form-check-input" onChange={handleCheckboxChange} />
+                      <label className="control-label col-sm-4" htmlFor="contact">Contact</label>
+                      <input type="text" className="form-control" name="contact" id="contact"/>
+                    </div><br/>
+                  </div>
+
+
                   <input type ="submit" className="btn btn-primary align-btn" disabled={!isChecked}/>
 
-                  <input type="hidden" name='oldID' value={collectionData["973Value"]}/><br/>
+                  <input type="hidden" name='oldID' value={vendorData["Vendor ID"]}/><br/>
 
                   { !isChecked ? (
                   <div className="warn-msg">
@@ -182,4 +181,4 @@ function EcollectionEdit () {
     )
 };
 
-export default EcollectionEdit;
+export default VendorEdit;

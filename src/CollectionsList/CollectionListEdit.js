@@ -4,9 +4,8 @@ import { useLocation } from "react-router-dom";
 import axios from '../api/axios';
 
 import "./CollectionListApp.css";
+import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL} from '../Constants/constants';
 
-const ALL_COLLECTIONS_EDIT_URL = "/allcollections-edit";
-const ALL_VENDOR_NAME_URL = "/vendors-name";
 
 const CollectionListEdit = () => {
     
@@ -59,7 +58,7 @@ const CollectionListEdit = () => {
           const formData = new FormData(e.target);
           console.log("formData:",formData);
           try{
-            const response = await axios.post(ALL_COLLECTIONS_EDIT_URL,
+            const response = await axios.post(ALL_E_COLLECTIONS_EDIT_URL,
                     formData,
                     {
                         headers: { 'Content-Type': `application/json`},
