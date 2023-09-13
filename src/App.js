@@ -16,6 +16,7 @@ import LoginApp from './Login/LoginApp';
 import PcollectionAddNew from './973PCollection/P_CollectionAddNew';
 import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
 import VendorEdit from './Vendor/VendorEdit';
+import VendorAdd from './Vendor/VendorAdd';
 
 
 function App() {
@@ -86,13 +87,11 @@ function App() {
             <Route path="/ecollections-add" element={<EcollectionAddNew />} exact />
             <Route path="/pcollections-edit" element={<PcollectionEdit />} exact />
             <Route path="/pcollections-add" element={<PcollectionAddNew />} exact />
-            <Route path="/vendor-edit" element={<VendorEdit />} exact />
+            <Route path="/vendors-edit" element={<VendorEdit />} exact />
+            <Route path="/vendors-add" element={<VendorAdd />} exact />
           </Routes>
         </Router>
       </div>
-
-
-
 
     </div>
   );

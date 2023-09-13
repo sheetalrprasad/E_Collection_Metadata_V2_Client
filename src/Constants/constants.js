@@ -11,7 +11,7 @@ export const ALL_973COLLECTIONS_URL = "/all973collections";
 export const VENDOR_URL = "/vendors";
 export const VENDOR_ADD_URL = "/vendors-add";
 export const VENDOR_DELETE_URL = "/vendors-delete";
-export const VENDOR_EDIT_URL = "/vendor-edit";
+export const VENDOR_EDIT_URL = "/vendors-edit";
 export const ALL_VENDOR_NAME_URL = "/vendors-name";
 
 

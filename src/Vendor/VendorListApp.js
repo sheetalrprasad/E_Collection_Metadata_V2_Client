@@ -59,7 +59,7 @@ const VendorListApp = () => {
         
         async function deletePost() {
           try {
-            const response = await axios.delete(VENDOR_DELETE_URL+"/"+data["Vendor Name"],
+            const response = await axios.delete(VENDOR_DELETE_URL+"/"+data["Vendor ID"]+"&"+data["Vendor Name"],
               {
                 headers: { 'Content-Type': `application/json`},
               }
