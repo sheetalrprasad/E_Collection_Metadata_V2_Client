@@ -17,6 +17,7 @@ const CollectionListEdit = () => {
       return localStorage.getItem('msg') || ''
     });
     const [textNote, setTextNote] = useState();
+
     const location = useLocation();
     const data = location.state;
     
@@ -66,6 +67,7 @@ const CollectionListEdit = () => {
                 );
            
                 if (response?.status===200){
+                  console.log("response: ",response.status);
                   setMsg("Update Successful.")
                 }else {
                   setMsg("Update Failed.")
@@ -93,7 +95,9 @@ const CollectionListEdit = () => {
 
     const handleAlmaInfo = (data) => {
       console.log("get alma data");
-      setShowAlma(true);
+
+      setShowAlma(!showAlma);
+
     };
 
 
@@ -101,8 +105,6 @@ const CollectionListEdit = () => {
       { collectionData ? (
       <div>
       <h3>Update record</h3>
-
-    
         <div>
           <table className='table table-bordered table-hover'>
               <tbody>
@@ -140,13 +142,17 @@ const CollectionListEdit = () => {
               </tbody>
           </table>
 
-          <button id = "alma-button" className="btn btn-info" type="button" onClick={ () => handleAlmaInfo() }>View Information in Alma</button>
+          { !showAlma ? (
+            <button id = "alma-button" className="btn btn-info" type="button" onClick={ () => handleAlmaInfo() }>View Information in Alma</button>
+          ) : (
+            <button id = "alma-button" className="btn btn-info" type="button" onClick={ () => handleAlmaInfo() }>Hide Information in Alma</button>
+          )}
 
           { showAlma ? (
             <div className='alma-info'>
               <p> Section for Alma.</p>
             </div> ): null}
-          <div className="modify-E-form">
+            <div className="modify-E-form">
               <h3>Modify</h3>
               <p>Check the field that you would like to change first and enter the new value.</p>
 
@@ -316,17 +322,14 @@ const CollectionListEdit = () => {
               }
 
               </form>
+            </div>
           </div>
+        </div> ) : (
+            <div>
+              {msg}
+            </div>
+        ) }
       </div>
-  </div> ) : (
-      <div>
-        {msg}
-      </div>
-    ) }
-
-  
-    </div>
-    
 };
 
 

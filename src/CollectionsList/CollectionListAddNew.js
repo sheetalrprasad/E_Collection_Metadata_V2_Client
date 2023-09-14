@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CollectionListApp.css";
 import axios from '../api/axios';
-import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_VENDOR_NAME_URL, E_COLLECTIONS_ADD_URL } from "../Constants/constants";
+import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_VENDOR_NAME_URL } from "../Constants/constants";
 
 function CollectionListAddNew () {
     
@@ -30,7 +30,7 @@ function CollectionListAddNew () {
         const formData = new FormData(e.target);
         console.log("formData:",formData);
         try{
-        const response = await axios.post(E_COLLECTIONS_ADD_URL,
+        const response = await axios.post(ALL_E_COLLECTIONS_ADD_URL,
                 formData,
                 {
                     headers: { 'Content-Type': `application/json`},
@@ -78,15 +78,15 @@ function CollectionListAddNew () {
 
                 <div className="form-group">
                     <div className="col-sm-3">
-                    <label className="control-label col-sm-4" htmlFor="eid">Collection ID:</label>
-                    <input type="number" className="form-control" name="eid" id="eid"/>
+                    <label className="control-label col-sm-4" htmlFor="collectionID">Collection ID:</label>
+                    <input type="number" className="form-control" name="collectionID" id="collectionID"/>
                     </div> <br/>
                 </div>
 
                 <div className="form-group">
                     <div className="col-sm-3">
-                    <label className="control-label col-sm-6" htmlFor="ename">Collection Name:</label>
-                    <input type="text" className="form-control" name="ename" id="ename"/>
+                    <label className="control-label col-sm-6" htmlFor="collectionName">Collection Name:</label>
+                    <input type="text" className="form-control" name="collectionName" id="collectionName"/>
                     </div><br/>
                 </div>
 
@@ -110,8 +110,8 @@ function CollectionListAddNew () {
 
                 <div className="form-group">
                     <div className="col-sm-3">
-                    <label className="control-label col-sm-4" htmlFor="ebib">BIB Source</label>
-                    <select name="ebib" id="ebib" className="form-select">
+                    <label className="control-label col-sm-4" htmlFor="bibSource">BIB Source</label>
+                    <select name="bibSource" id="bibSource" className="form-select">
                         <option value="vendor">Vendor</option>
                         <option value="CZ">CZ</option>
                         <option value="WCM">WCM</option>
@@ -197,8 +197,8 @@ function CollectionListAddNew () {
                
                 <div className="form-group">
                     <div className="col-sm-3">
-                    <label className="control-label col-sm-4" htmlFor="vendor">Vendor</label>
-                    <select name="vendor" id="vendor" className="form-select">
+                    <label className="control-label col-sm-4" htmlFor="collectionVendor">Vendor</label>
+                    <select name="collectionVendor" id="collectionVendor" className="form-select">
                         <option value="-">?</option>
                         {
                             vendorNames.map(vendor => <option key={vendor['Vendor Name']} value={vendor['Vendor Name']}>{vendor['Vendor Name']} </option>)
@@ -209,9 +209,9 @@ function CollectionListAddNew () {
 
                 <div className="form-group">
                     <div className="col-sm-3">
-                    <label className="control-label col-sm-8" htmlFor="enote">Note</label>
+                    <label className="control-label col-sm-8" htmlFor="collectionNotes">Note</label>
                     <div className="text-area">
-                        <textarea type="text" name="enote" id="enote" className="form-control flex-child" rows="3"></textarea>
+                        <textarea type="text" name="collectionNotes" id="collectionNotes" className="form-control flex-child" rows="3"></textarea>
                     </div>
                     </div>
                 </div>

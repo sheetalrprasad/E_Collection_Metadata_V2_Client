@@ -23,7 +23,6 @@ function EcollectionEdit () {
 
 
     useEffect(() => {
-      console.log(data);
       setCollectionData(data);
     }, [data]);
 

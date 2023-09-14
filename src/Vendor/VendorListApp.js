@@ -27,7 +27,7 @@ const VendorListApp = () => {
         const fetch = async () => {
           try {
             const { data } = await axios.get(VENDOR_URL);
-            console.log(data)
+            
             setVendorList(data);
           } catch (err) {
             console.error(err);
