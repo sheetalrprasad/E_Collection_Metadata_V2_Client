@@ -24,3 +24,6 @@ export const E_COLLECTIONS_URL = "/ecollections";
 export const E_COLLECTIONS_DELETE_URL = "/ecollections-delete";
 export const E_COLLECTIONS_ADD_URL = "/ecollections-add";
 export const E_COLLECTIONS_EDIT_URL = "/ecollections-edit";
+
+export const SEARCH_ALMA_URL = "/search-alma";
+export const SEARCH_ALMA_API_URL = "/search-alma-api";

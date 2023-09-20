@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_E_COLLECTIONS_DELETE_URL, ALL_E_COLLECTIONS_EDIT_URL } from "../Constants/constants";    
+import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_E_COLLECTIONS_DELETE_URL, ALL_E_COLLECTIONS_EDIT_URL, SEARCH_ALMA_URL } from "../Constants/constants";    
 
 const CollectionListApp = () => {
     
@@ -92,8 +92,6 @@ const CollectionListApp = () => {
     if (allowPage) {
       return <div className="collections table-responsive-sm">
 
-       
-
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -103,7 +101,7 @@ const CollectionListApp = () => {
               <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_URL }>View/Edit</a>
               <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
               <a className="nav-item nav-link" href={ ALL_E_COLLECTIONS_ADD_URL }>Add New</a>
-              <a className="nav-item nav-link" href="/">Search Alma</a>
+              <a className="nav-item nav-link" href={ SEARCH_ALMA_URL }>Search Alma</a>
             </div>
           </div>
         </nav>

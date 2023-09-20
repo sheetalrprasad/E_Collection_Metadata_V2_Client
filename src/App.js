@@ -17,6 +17,7 @@ import PcollectionAddNew from './973PCollection/P_CollectionAddNew';
 import EcollectionAddNew from './973ECollection/E_CollectionAddNew';
 import VendorEdit from './Vendor/VendorEdit';
 import VendorAdd from './Vendor/VendorAdd';
+import SearchAlma from './SearchAlma/SearchAlma';
 
 
 function App() {
@@ -89,6 +90,8 @@ function App() {
             <Route path="/pcollections-add" element={<PcollectionAddNew />} exact />
             <Route path="/vendors-edit" element={<VendorEdit />} exact />
             <Route path="/vendors-add" element={<VendorAdd />} exact />
+            <Route path="/search-alma" element={<SearchAlma />} exact />
+            
           </Routes>
         </Router>
       </div>
