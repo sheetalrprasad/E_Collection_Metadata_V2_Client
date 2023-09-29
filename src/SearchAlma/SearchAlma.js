@@ -29,7 +29,7 @@ const SearchAlma = () => {
         }).catch((error) => { 
             console.log("Error:",error); 
             setCollectionList({});
-            setErrorData(error.message);
+            setErrorData(error.code+" - "+error.message);
         }); 
         
     };
@@ -69,13 +69,19 @@ const SearchAlma = () => {
                         <li><b>Public Note:</b> {collectionList.pub_note}</li>
                     </ul>
 
-                    <br/>
                     <h5>Service Information</h5>
                     <ul>
-                        <li><b>Num of Portfolios: </b>{collectionList.serviceData.sernum}</li>
-                        
+                        <li><b>Num of Portfolios: {collectionList.sernum}</b></li>
+                        {
+                            collectionList.serviceData.map((serviceData, index) => (
+                            <div>
+                                <li><b>Service{index+1} Available?: </b>{serviceData.servail}</li>
+                                <li><b>Service{index+1} Portfolio:</b> {serviceData.sernum}</li>
+                                <li><b>Service{index+1} description: </b>{serviceData.serdesc}</li>
+                            </div>
+                            ))
+                        }
                     </ul>
-
 
                 </div> : <div> 
                     {errorData !=="" ? <p className='error-msg'>{errorData}</p> : <p></p> }
