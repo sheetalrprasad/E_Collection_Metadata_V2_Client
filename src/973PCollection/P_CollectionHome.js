@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
-import { P_COLLECTIONS_ADD_URL, P_COLLECTIONS_DELETE_URL, P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL } from '../Constants/constants';
+import { P_COLLECTIONS_ADD_URL, P_COLLECTIONS_DELETE_URL, P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL, SEARCH_ALMA_URL } from '../Constants/constants';
 
 
 function PcollectionHome () {
@@ -90,7 +90,7 @@ function PcollectionHome () {
               <a className="nav-item nav-link" href={ P_COLLECTIONS_URL }>View/Edit</a>
               <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
               <a className="nav-item nav-link" href={ P_COLLECTIONS_ADD_URL }>Add New</a>
-              <a className="nav-item nav-link" href="/">Search Alma</a>
+              <a className="nav-item nav-link" href={ SEARCH_ALMA_URL }>Search Alma</a>
             </div>
           </div>
         </nav>

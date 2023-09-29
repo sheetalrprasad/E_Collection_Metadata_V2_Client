@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./E_Collection.css";
 import axios from '../api/axios';
-import { E_COLLECTIONS_URL } from "../Constants/constants";
+import { E_COLLECTIONS_URL, SEARCH_ALMA_URL } from "../Constants/constants";
 
 const E_COLLECTIONS_ADD_URL = "/ecollections-add";
 
@@ -53,7 +53,7 @@ function EcollectionAddNew () {
                     <div className="navbar-nav">
                     <a className="nav-item nav-link" href={ E_COLLECTIONS_URL }>View/Edit</a>
                     <a className="nav-item nav-link" href={ E_COLLECTIONS_ADD_URL }>Add New</a>
-                    <a className="nav-item nav-link" href="/">Search Alma</a>
+                    <a className="nav-item nav-link" href={ SEARCH_ALMA_URL }>Search Alma</a>
                     </div>
                 </div>
             </nav>

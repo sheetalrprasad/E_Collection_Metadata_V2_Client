@@ -1,30 +1,37 @@
 import React from 'react';
-import { useState } from "react";
 import axios from '../api/axios';
+import { useState } from 'react';
 import { SEARCH_ALMA_API_URL } from '../Constants/constants';
 
 
 const SearchAlma = () => {
 
-    const [collectionList, setCollectionList] = useState({});
+    const [collectionList, setCollectionList] = useState([]);
+    const [collectionId, setCollectionId] = useState('');
+    const [errorData, setErrorData] = useState('');
     
     const handleSubmit = async (e) =>{
-        
+        e.preventDefault();
+
         const formData = new FormData(e.target);
         const formDataObj = Object.fromEntries(formData.entries());
-        console.log("Obj:",formDataObj);
+        setCollectionId(formDataObj.almaid);
 
-        await axios.get(SEARCH_ALMA_API_URL+"/"+formDataObj["almaid"],
+        await axios.post(SEARCH_ALMA_API_URL,formDataObj,
             {
-                headers: { 'Content-Type': `application/json`},
+                headers: { 
+                    'Content-Type': `application/json`,
+                    'Accept': 'application/json'
+                },
             }
-        ).then((response) => {
-            console.log("Response: ",response.json());
+        ).then((response) => { 
             setCollectionList(response.data);
-        }).catch((error) => {   
-            console.log(error);
-        });
-
+        }).catch((error) => { 
+            console.log("Error:",error); 
+            setCollectionList({});
+            setErrorData(error.message);
+        }); 
+        
     };
 
 
@@ -41,11 +48,40 @@ const SearchAlma = () => {
                 </div>
                 <button type="submit" className="btn btn-primary align-btn">Search</button>
             </form>
-            { collectionList.length > 0 ?
-                <div>
-                    <h1> Results </h1>
+            <div>
+                <br/>
+                {Object.keys(collectionList).length > 0 ? <div>
+                    <h5>Collection Information</h5>
+                    <ul>
+                        <li><b>Name:</b> {collectionList.name}</li>
+                        <li><b>Collection ID:</b> {collectionId}</li>
+                        <li><b>Num of Portfolios:</b> {collectionList.numport}</li>
+                        <li><b>Perpetual?:</b> {collectionList.perp}</li>
+                        <li><b>Aggregator?:</b> {collectionList.aggre}</li>
+                        <li><b>OA?:</b> {collectionList.free}</li>
+                        <li><b>Local?:</b> {collectionList.iz}</li>
+                        <li><b>Proxy?:</b> {collectionList.proxy}</li>
+                        <li><b>CDI?:</b> {collectionList.cdi}</li>
+                        <li><b>PO:</b> {collectionList.po}</li>
+                        <li><b>Interface:</b> {collectionList.interface}</li>
+                        <li><b>Description:</b> {collectionList.des}</li>
+                        <li><b>Internal Description:</b> {collectionList.internal_des}</li>
+                        <li><b>Public Note:</b> {collectionList.pub_note}</li>
+                    </ul>
+
+                    <br/>
+                    <h5>Service Information</h5>
+                    <ul>
+                        <li><b>Num of Portfolios: </b>{collectionList.serviceData.sernum}</li>
+                        
+                    </ul>
+
+
+                </div> : <div> 
+                    {errorData !=="" ? <p className='error-msg'>{errorData}</p> : <p></p> }
                 </div>
-            :<></>}
+                }
+            </div>
         </div>
           
     </div>
