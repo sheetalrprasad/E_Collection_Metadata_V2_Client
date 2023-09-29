@@ -4,7 +4,8 @@ import { useLocation } from "react-router-dom";
 import axios from '../api/axios';
 
 import "./CollectionListApp.css";
-import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL} from '../Constants/constants';
+import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL} from '../Constants/constants';
+import AlmaSubPageDetails from '../SearchAlma/AlmaSubPageDetails';
 
 
 const CollectionListEdit = () => {
@@ -17,6 +18,9 @@ const CollectionListEdit = () => {
       return localStorage.getItem('msg') || ''
     });
     const [textNote, setTextNote] = useState();
+
+    const [almaDetails, setAlmaDetails] = useState([]);
+    const [errorData, setErrorData] = useState('');
 
     const location = useLocation();
     const data = location.state;
@@ -93,9 +97,24 @@ const CollectionListEdit = () => {
         }
       }
 
-    const handleAlmaInfo = (data) => {
-      console.log("get alma data");
+    const handleAlmaInfo = async (data) => {
 
+      // if (!showAlma) {
+      //   await axios.post(SEARCH_ALMA_API_URL,collectionData["Collection ID"],
+      //     {
+      //         headers: { 
+      //             'Content-Type': `application/json`,
+      //             'Accept': 'application/json'
+      //         },
+      //       }
+      //   ).then((response) => { 
+      //       setAlmaDetails(response.data);
+      //   }).catch((error) => { 
+      //       console.log("Error:",error); 
+      //       setAlmaDetails({});
+      //       setErrorData(error.code+" - "+error.message);
+      //   }); 
+      // }
       setShowAlma(!showAlma);
 
     };
@@ -150,7 +169,7 @@ const CollectionListEdit = () => {
 
           { showAlma ? (
             <div className='alma-info'>
-              <p> Section for Alma.</p>
+              <AlmaSubPageDetails collectionList={almaDetails} collectionId={collectionData["Collection ID"]} errorData={errorData}/>
             </div> ): null}
             <div className="modify-E-form">
               <h3>Modify</h3>
