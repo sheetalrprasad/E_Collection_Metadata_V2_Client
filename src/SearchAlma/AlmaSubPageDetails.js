@@ -27,14 +27,16 @@ const AlmaSubPageDetails = (props) => {
 
                     <h5>Service Information</h5>
                     <ul>
-                        <li><b>Num of Portfolios: {collectionList.sernum}</b></li>
+                        <p><b>Num of Portfolios: {collectionList.sernum}</b></p><hr/>
                         {
                             collectionList.serviceData.map((serviceData, index) => (
                             <div>
                                 <li><b>Service{index+1} Available?: </b>{serviceData.servail}</li>
                                 <li><b>Service{index+1} Portfolio:</b> {serviceData.sernum}</li>
                                 <li><b>Service{index+1} description: </b>{serviceData.serdesc}</li>
+                                <hr/>
                             </div>
+                            
                             ))
                         }
                     </ul>

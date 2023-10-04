@@ -32,7 +32,17 @@
 }
 
 .alma-info {
-    margin-top: 2%;
-    margin-bottom: 2%;
-    background-color: aquamarine;
+    margin-top: 1%;
+    padding: 1%;
+    background-color: rgb(246, 247, 242);
+    text-align: left;
+}
+
+.filter-button {
+    margin-left: 1%;
+    cursor: pointer;
+}
+.filter-button:active,
+.filter-button.is-checked {
+  background-color: rgb(146, 211, 42);
 }

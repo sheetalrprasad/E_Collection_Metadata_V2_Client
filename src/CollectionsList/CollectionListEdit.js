@@ -97,24 +97,27 @@ const CollectionListEdit = () => {
         }
       }
 
-    const handleAlmaInfo = async (data) => {
+    const handleAlmaInfo = async () => {
 
-      // if (!showAlma) {
-      //   await axios.post(SEARCH_ALMA_API_URL,collectionData["Collection ID"],
-      //     {
-      //         headers: { 
-      //             'Content-Type': `application/json`,
-      //             'Accept': 'application/json'
-      //         },
-      //       }
-      //   ).then((response) => { 
-      //       setAlmaDetails(response.data);
-      //   }).catch((error) => { 
-      //       console.log("Error:",error); 
-      //       setAlmaDetails({});
-      //       setErrorData(error.code+" - "+error.message);
-      //   }); 
-      // }
+      var almaDetails = { "almaid": collectionData["Collection ID"] };
+      
+      if (!showAlma) {
+        await axios.post(SEARCH_ALMA_API_URL, almaDetails,
+          {
+              headers: { 
+                  'Content-Type': `application/json`,
+                  'Accept': 'application/json'
+              },
+            }
+        ).then((response) => { 
+            setAlmaDetails(response.data);
+        }).catch((error) => { 
+            console.log("Error:",error); 
+            setAlmaDetails({});
+            setErrorData(error.code+" - "+error.message);
+        }); 
+      }
+
       setShowAlma(!showAlma);
 
     };

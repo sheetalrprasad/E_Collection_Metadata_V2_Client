@@ -108,14 +108,31 @@ const CollectionListApp = () => {
 
         {
           showFilter  ? 
-            <div className="input-group mb-8">
-              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-              <div className="input-group-addon2 ">
-                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+            <div>
+              <div className="input-group mb-8">
+                <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+                <div className="input-group-addon2 ">
+                  <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
+                  <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+                </div>
+              </div>
+              <div>
+                <button className='filter-button btn btn-outline-primary'>Resource Type</button>
+                <button className='filter-button btn btn-outline-primary'>Bib Source</button>
+                <button className='filter-button btn btn-outline-primary'>Update Frequency</button>
+                <button className='filter-button btn btn-outline-primary'>Active?</button>
+                <button className='filter-button btn btn-outline-primary'>Perpetual?</button>
+                <button className='filter-button btn btn-outline-primary'>Aggregator?</button>
+                <button className='filter-button btn btn-outline-primary'>Data Sync?</button>
+                <button className='filter-button btn btn-outline-primary'>OA?</button>
+                <button className='filter-button btn btn-outline-primary'>Reclamation?</button>
+                <button className='filter-button btn btn-outline-primary'>Vendor</button>
+                <button className='filter-button btn btn-outline-primary'>Note</button>
               </div>
             </div> : <></>
         }
+
+        <br/>
 
         <h3>All E-Collections</h3>
 
