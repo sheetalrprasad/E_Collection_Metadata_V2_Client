@@ -58,44 +58,33 @@ const CollectionListEdit = () => {
     }
     
     const handleSubmit = async (e) =>{
-          const form = document.querySelector("form");
-          console.log("form: ",form);
-          const formData = new FormData(e.target);
-          console.log("formData:",formData);
-          try{
-            const response = await axios.post(ALL_E_COLLECTIONS_EDIT_URL,
-                    formData,
-                    {
-                        headers: { 'Content-Type': `application/json`},
-                    }
-                );
-           
-                if (response?.status===200){
-                  console.log("response: ",response.status);
-                  setMsg("Update Successful.")
-                }else {
-                  setMsg("Update Failed.")
-                }
-                
-        } catch(err){
-          console.log(err);
-        }
+        const form = document.querySelector("form");
+        console.log("form: ",form);
+        const formData = new FormData(e.target);
+        console.log("formData:",formData);
 
+        try{
+          await axios.post(ALL_E_COLLECTIONS_EDIT_URL,
+                  formData,
+                  {
+                      headers: { 'Content-Type': `application/json`},
+                  }
+          ).then((response) => {
+            response.status===200 ? setMsg("Update Successful.") : setMsg("Update Failed.");
+          }).catch((error) => {
+            console.log("Error:",error);
+            setMsg("Update Failed.");
+          });
+              
+      } catch(err){
+        console.log(err);
+        setMsg("Update Failed.");
+      }
     };
 
     const handleCheckboxChange = (e) => {
       setIsChecked(e.target.checked);
     };
-    
-    const handlePerpetual = (data) => {
-        if (data["Perpetual?"] === 1) {
-          return "Y";
-        } else if (data["Perpetual?"] === 2) {
-          return "Some";
-        } else {
-          return "N";
-        }
-      }
 
     const handleAlmaInfo = async () => {
 
@@ -122,6 +111,15 @@ const CollectionListEdit = () => {
 
     };
 
+    const handlePerpetual = (data) => {
+      if (data["Perpetual?"] === 1) {
+        return "Y";
+      } else if (data["Perpetual?"] === 2) {
+        return "Some";
+      } else {
+        return "N";
+      }
+    }
 
     return <div className="collections table-responsive-sm">
       { collectionData ? (

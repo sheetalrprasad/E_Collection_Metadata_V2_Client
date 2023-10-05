@@ -29,6 +29,7 @@ const CollectionListApp = () => {
           try {
             const { data } = await axios.get(ALL_E_COLLECTIONS_URL);
             setCollectionList(data);
+            setCollectionListOriginal(data);
           } catch (err) {
             console.error(err);
           }
@@ -64,12 +65,30 @@ const CollectionListApp = () => {
         deletePost();
       };
 
-      const handleFilter = () => {
+      const handleColumnFilter = (column) => {
+
         let searchString = document.getElementById("filter-input").value;
-        const filtered = collectionList.filter(item => (
-          item["Collection Name"].toLowerCase().includes(searchString.toLowerCase())
+        let filtered;
+        if (column === "Active?" || column === "Aggregator?" || column === "Data Sync?" || column === "OA?" || column === "Reclamation?" || column === "Perpetual?") {
+        if (searchString.toLowerCase() === "y") {
+            searchString = 1;
+        }else if (searchString.toLowerCase() === "n") {
+            searchString = 0;
+        } else if (searchString.toLowerCase() === "some") {
+            searchString = 2;
+        } 
+
+        filtered = collectionListOriginal.filter(item => (
+          item[column] === searchString
         ));
-        setCollectionListOriginal(collectionList);
+
+      } else{
+
+        filtered = collectionListOriginal.filter(item => (
+          item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())
+        ));
+      }
+        
         setCollectionList(filtered);
       }
 
@@ -110,24 +129,23 @@ const CollectionListApp = () => {
           showFilter  ? 
             <div>
               <div className="input-group mb-8">
-                <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+                <input type="text" className="form-control" id="filter-input" placeholder="Enter your text" aria-label="Collection Name" aria-describedby="basic-addon2" />
                 <div className="input-group-addon2 ">
-                  <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
                   <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
                 </div>
               </div>
               <div>
-                <button className='filter-button btn btn-outline-primary'>Resource Type</button>
-                <button className='filter-button btn btn-outline-primary'>Bib Source</button>
-                <button className='filter-button btn btn-outline-primary'>Update Frequency</button>
-                <button className='filter-button btn btn-outline-primary'>Active?</button>
-                <button className='filter-button btn btn-outline-primary'>Perpetual?</button>
-                <button className='filter-button btn btn-outline-primary'>Aggregator?</button>
-                <button className='filter-button btn btn-outline-primary'>Data Sync?</button>
-                <button className='filter-button btn btn-outline-primary'>OA?</button>
-                <button className='filter-button btn btn-outline-primary'>Reclamation?</button>
-                <button className='filter-button btn btn-outline-primary'>Vendor</button>
-                <button className='filter-button btn btn-outline-primary'>Note</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Resource Type")}>Resource Type</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Bib Source")}>Bib Source</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Update Frequency")}>Update Frequency</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Active?")}>Active?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Perpetual?")}>Perpetual?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Aggregator?")}>Aggregator?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Data Sync?")}>Data Sync?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("OA?")}>OA?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Reclamation?")}>Reclamation?</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Vendor")}>Vendor</button>
+                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Note")}>Note</button>
               </div>
             </div> : <></>
         }

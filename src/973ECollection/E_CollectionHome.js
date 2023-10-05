@@ -28,6 +28,7 @@ function EcollectionHome () {
           try {
             const { data } = await axios.get(E_COLLECTIONS_URL);
             setCollectionList(data);
+            setCollectionListOriginal(data);
           } catch (err) {
             console.error(err);
           }
@@ -63,12 +64,28 @@ function EcollectionHome () {
         deletePost();
       };
 
-      const handleFilter = () => {
+      const handleColumnFilter = (column) => {
+
         let searchString = document.getElementById("filter-input").value;
-        const filtered = collectionList.filter(item => (
-          item["973Value"].toLowerCase().includes(searchString.toLowerCase())
+        let filtered;
+        if (column === "973inAllBIB" || column === "973NormRule" || column === "IZonly?" ) {
+        if (searchString.toLowerCase() === "y") {
+            searchString = 1;
+        }else if (searchString.toLowerCase() === "n") {
+            searchString = 0;
+        }
+
+        filtered = collectionListOriginal.filter(item => (
+          item[column] === searchString
         ));
-        setCollectionListOriginal(collectionList);
+
+      } else{
+
+        filtered = collectionListOriginal.filter(item => (
+          item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim() )
+        ));
+      }
+        
         setCollectionList(filtered);
       }
 
@@ -98,12 +115,20 @@ function EcollectionHome () {
 
         {
           showFilter  ? 
-            <div className="input-group mb-8">
-              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
+            <div>
+              <div className="input-group mb-8">
+              <input type="text" className="form-control" id="filter-input" placeholder="Enter you text" aria-label="Collection Name" aria-describedby="basic-addon2" />
               <div className="input-group-addon2 ">
-                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
                 <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
               </div>
+              </div>
+
+              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("973inAllBIB")}>973 in Bib?</button>
+              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("973NormRule")}>973 Norm Rule?</button>
+              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("IZonly?")}>IZ Only?</button>
+              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Note")}>Note</button>
+              <br/>
+              <br/>
             </div> : <></>
         }
 
