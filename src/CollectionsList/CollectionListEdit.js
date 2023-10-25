@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from '../api/axios';
-
+import Select  from "react-select";
 import "./CollectionListApp.css";
 import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL} from '../Constants/constants';
 import AlmaSubPageDetails from '../SearchAlma/AlmaSubPageDetails';
@@ -24,6 +24,19 @@ const CollectionListEdit = () => {
 
     const location = useLocation();
     const data = location.state;
+
+    const [resourceType, setResourceType] = useState([]);
+    const resourceOptions = [
+     { label: 'Book', value: 'book'},
+     { label: 'Audio', value: 'audio'},
+     { label: 'Streaming Audio', value: 'streaming audio'},
+     { label: 'Video', value: 'video'},
+     { label: 'Streaming Video', value: 'streaming video'},
+     { label: 'Journal', value: 'journal'},
+     { label: 'Newspaper', value: 'newspaper'},
+     {  label: 'Gov Doc', value: 'govdoc'},
+      { label: 'Master Thesis', value: 'masterthesis'}
+    ];
     
     useEffect(() => {
       localStorage.setItem('msg', msg);
@@ -62,6 +75,7 @@ const CollectionListEdit = () => {
         console.log("form: ",form);
         const formData = new FormData(e.target);
         console.log("formData:",formData);
+        
 
         try{
           await axios.post(ALL_E_COLLECTIONS_EDIT_URL,
@@ -197,10 +211,19 @@ const CollectionListEdit = () => {
 
               <div className="form-group">
                   <div className="col-sm-3">
-                  <input type="checkbox" id="resourcecheck" name="resourcecheck" className="form-check-input" onChange={handleCheckboxChange}/>
-                  <label className="control-label col-sm-4" htmlFor="resourceType">Resouce Type</label>
-                  
-                  <select name="resourceType" id="resourceType"  className="form-select" multiple>
+                   <input type="checkbox" id="resourcecheck" name="resourcecheck" className="form-check-input" onChange={handleCheckboxChange}/>
+                   <label className="control-label col-sm-4" htmlFor="resourceType">Resouce Type</label> <br/>
+                    <Select
+                      options={resourceOptions}
+                      value={resourceType}
+                      placeholder='Select Resource Type'
+                      onChange = { (value) => setResourceType(value) }
+                      showCheckbox={true}
+                      isMulti={true}
+                      name="resourceType"
+                      id="resourceType"
+                    />
+                  {/* <select name="resourceType" id="resourceType"  className="form-select" multiple>
                       <option value="book">Book</option>
                       <option value="audio">Audio</option>
                       <option value="streaming audio">Streaming Audio</option>
@@ -210,7 +233,7 @@ const CollectionListEdit = () => {
                       <option value="newspaper">Newspaper</option>
                       <option value="govdoc">Gov Doc</option>
                       <option value="masterthesis">Master Thesis</option>
-                  </select>
+                  </select> */}
                   </div><br/>
               </div>
 

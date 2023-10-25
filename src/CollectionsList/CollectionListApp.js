@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import axios from '../api/axios';
+import Select from "react-select";
 import { useNavigate } from 'react-router-dom';
 import { ALL_E_COLLECTIONS_URL, ALL_E_COLLECTIONS_ADD_URL, ALL_E_COLLECTIONS_DELETE_URL, ALL_E_COLLECTIONS_EDIT_URL, SEARCH_ALMA_URL } from "../Constants/constants";    
 
@@ -12,6 +13,21 @@ const CollectionListApp = () => {
     const [showFilter, setShowFilter] = useState(false);
     const navigate = useNavigate();
 
+    const filterOptions = [
+      { value: 'Resource Type', label: 'Resource Type' },
+      { value: 'Bib Source', label: 'Bib Source' },
+      { value: 'Update Frequency', label: 'Update Frequency' },
+      { value: 'Active?', label: 'Active?' },
+      { value: 'Perpetual?', label: 'Perpetual?' },
+      { value: 'Aggregator?', label: 'Aggregator?' },
+      { value: 'Data Sync?', label: 'Data Sync?' },
+      { value: 'OA?', label: 'OA?' },
+      { value: 'Reclamation?', label: 'Reclamation?' },
+      { value: 'Vendor', label: 'Vendor' },
+      { value: 'Note', label: 'Note'}
+    ];
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
 
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user');
@@ -92,11 +108,6 @@ const CollectionListApp = () => {
         setCollectionList(filtered);
       }
 
-      const handleCancelFilter = () => {
-        setCollectionList(collectionListOriginal);
-        document.getElementById("filter-input").value = "";
-      }
-
       const handlePerpetual = (data) => {
         if (data["Perpetual?"] === 1) {
           return "Y";
@@ -129,23 +140,74 @@ const CollectionListApp = () => {
           showFilter  ? 
             <div>
               <div className="input-group mb-8">
-                <input type="text" className="form-control" id="filter-input" placeholder="Enter your text" aria-label="Collection Name" aria-describedby="basic-addon2" />
-                <div className="input-group-addon2 ">
-                  <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
-                </div>
+                <Select
+                  options={filterOptions}
+                  value={selectedFilters}
+                  placeholder='Select Filters'
+                  onChange = { (e) => setSelectedFilters(e) }
+                  showCheckbox={true}
+                  isMulti={true}
+                  name="filter"
+                  id="filter"
+                  
+                />
               </div>
               <div>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Resource Type")}>Resource Type</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Bib Source")}>Bib Source</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Update Frequency")}>Update Frequency</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Active?")}>Active?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Perpetual?")}>Perpetual?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Aggregator?")}>Aggregator?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Data Sync?")}>Data Sync?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("OA?")}>OA?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Reclamation?")}>Reclamation?</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Vendor")}>Vendor</button>
-                <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Note")}>Note</button>
+                { selectedFilters.length > 0 ?
+                <form>
+                  <div className="form-group">
+                    { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
+                      <label htmlFor="filter-input-resource">Resource Type</label>
+                      <input type="text" className="form-control" id="filter-input-resource" placeholder="Enter Resource Type" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[1].value) ? <div>
+                      <label htmlFor="filter-input-bib">Bib Source</label>
+                      <input type="text" className="form-control" id="filter-input-bib" placeholder="Enter Bib Source" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[2].value) ? <div>
+                      <label htmlFor="filter-input-update">Update Frequency</label>
+                      <input type="text" className="form-control" id="filter-input-update" placeholder="Enter Update Frequency" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
+                      <label htmlFor="filter-input-active">Active?</label>
+                      <input type="text" className="form-control" id="filter-input-active" placeholder="Enter Y/N" />
+
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
+                      <label htmlFor="filter-input-perp">Perpetual?</label>
+                      <input type="text" className="form-control" id="filter-input-perp" placeholder="Enter Y/N/Some" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[5].value) ? <div>
+                      <label htmlFor="filter-input-agg">Aggregator?</label>
+                      <input type="text" className="form-control" id="filter-input-agg" placeholder="Enter Y/N" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[6].value) ? <div>
+                      <label htmlFor="filter-input-data">Data Sync?</label>
+                      <input type="text" className="form-control" id="filter-input-data" placeholder="Enter Y/N" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[7].value) ? <div>
+                      <label htmlFor="filter-input-oa">OA?</label>
+                      <input type="text" className="form-control" id="filter-input-oa" placeholder="Enter Y/N" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[8].value) ? <div>
+                      <label htmlFor="filter-input-rec">Reclamation?</label>
+                      <input type="text" className="form-control" id="filter-input-rec" placeholder="Enter Y/N" />
+
+                      </div> : <></>  } 
+                    { selectedFilters.find(e => e.value === filterOptions[9].value) ? <div>
+                      <label htmlFor="filter-input-vendor">Vendor</label>
+                      <input type="text" className="form-control" id="filter-input-vendor" placeholder="Enter Vendor" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[10].value) ? <div>
+                      <label htmlFor="filter-input-note">Note</label>
+                      <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
+                      </div> : <></>  }
+                    
+                    <input type="button" className="btn btn-outline-primary" value="Apply" onClick={ () => handleColumnFilter(selectedFilters[0].value) }/>
+
+                  </div>
+                </form>: <></>
+                }
               </div>
             </div> : <></>
         }
