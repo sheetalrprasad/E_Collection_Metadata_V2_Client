@@ -81,31 +81,107 @@ const CollectionListApp = () => {
         deletePost();
       };
 
-      const handleColumnFilter = (column) => {
-
-        let searchString = document.getElementById("filter-input").value;
-        let filtered;
-        if (column === "Active?" || column === "Aggregator?" || column === "Data Sync?" || column === "OA?" || column === "Reclamation?" || column === "Perpetual?") {
+      const getYesNoSearchString = (searchString) => {
         if (searchString.toLowerCase() === "y") {
             searchString = 1;
         }else if (searchString.toLowerCase() === "n") {
             searchString = 0;
         } else if (searchString.toLowerCase() === "some") {
             searchString = 2;
-        } 
+        }
+      };
 
-        filtered = collectionListOriginal.filter(item => (
-          item[column] === searchString
-        ));
+      const handleColumnFilter = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        console.log("form: ",form);
+        const formData = new FormData(form);
+        console.log("formData:",formData);
+        
+        let searchString;
+        let column;
+        let filtered = collectionListOriginal;
 
-      } else{
-
-        filtered = collectionListOriginal.filter(item => (
-          item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())
-        ));
-      }
+        if (formData.hasOwnProperty("filter-input-resource")) {
+          searchString = formData.get("filter-input-resource");
+          column = "Resource Type";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (formData.hasOwnProperty("filter-input-bib")) {
+          searchString = formData.get("filter-input-bib");
+          column = "Bib Source";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (formData.hasOwnProperty("filter-input-update")) {
+          searchString = formData.get("filter-input-update");
+          column = "Update Frequency";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (formData.hasOwnProperty("filter-input-active")) {
+          searchString = formData.get("filter-input-active");
+          column = "Active?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-perp")) {
+          searchString = formData.get("filter-input-perp");
+          column = "Perpetual?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-agg")) {
+          searchString = formData.get("filter-input-agg");
+          column = "Aggregator?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-data")) {
+          searchString = formData.get("filter-input-data");
+          column = "Data Sync?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-oa")) {
+          searchString = formData.get("filter-input-oa");
+          column = "OA?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-rec")) {
+          searchString = formData.get("filter-input-rec");
+          column = "Reclamation?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (formData.hasOwnProperty("filter-input-vendor")) {
+          searchString = formData.get("filter-input-vendor");
+          column = "Vendor";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (formData.hasOwnProperty("filter-input-note")) {
+          searchString = formData.get("filter-input-note");
+          column = "Note";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
         
         setCollectionList(filtered);
+      }
+
+
+      const handleReset = () => {
+        setCollectionList(collectionListOriginal);
+        setSelectedFilters([]);
       }
 
       const handlePerpetual = (data) => {
@@ -154,7 +230,7 @@ const CollectionListApp = () => {
               </div>
               <div>
                 { selectedFilters.length > 0 ?
-                <form>
+                <form id="filter-form" onSubmit={handleColumnFilter}>
                   <div className="form-group">
                     { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
                       <label htmlFor="filter-input-resource">Resource Type</label>
@@ -171,7 +247,6 @@ const CollectionListApp = () => {
                     { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
                       <label htmlFor="filter-input-active">Active?</label>
                       <input type="text" className="form-control" id="filter-input-active" placeholder="Enter Y/N" />
-
                       </div> : <></>  }
                     { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
                       <label htmlFor="filter-input-perp">Perpetual?</label>
@@ -203,8 +278,8 @@ const CollectionListApp = () => {
                       <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
                       </div> : <></>  }
                     
-                    <input type="button" className="btn btn-outline-primary" value="Apply" onClick={ () => handleColumnFilter(selectedFilters[0].value) }/>
-
+                    <input type="submit" className="btn btn-outline-primary" value="Apply" />
+                    <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
                   </div>
                 </form>: <></>
                 }

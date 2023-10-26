@@ -37,18 +37,3 @@
     background-color: rgb(246, 247, 242);
     text-align: left;
 }
-
-.filter-button {
-    margin-left: 1%;
-    cursor: pointer;
-}
-.filter-button:active,
-.filter-button.is-checked {
-  background-color: rgb(146, 211, 42);
-}
-
-.multiselect-input {
-    background-color: white;
-    opacity: 100;
-    z-index: 100 !important;
-}
