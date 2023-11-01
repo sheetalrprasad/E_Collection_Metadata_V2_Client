@@ -83,93 +83,100 @@ const CollectionListApp = () => {
 
       const getYesNoSearchString = (searchString) => {
         if (searchString.toLowerCase() === "y") {
-            searchString = 1;
+            return 1;
         }else if (searchString.toLowerCase() === "n") {
-            searchString = 0;
+            return 0;
         } else if (searchString.toLowerCase() === "some") {
-            searchString = 2;
+           return 2;
         }
       };
 
       const handleColumnFilter = (e) => {
         e.preventDefault();
-        const form = e.target;
-        console.log("form: ",form);
-        const formData = new FormData(form);
-        console.log("formData:",formData);
+        let resource = document.getElementById("filter-input-resource");
+        let bib = document.getElementById("filter-input-bib");
+        let update = document.getElementById("filter-input-update");
+        let active = document.getElementById("filter-input-active");
+        let perp = document.getElementById("filter-input-perp");
+        let agg = document.getElementById("filter-input-agg");
+        let data = document.getElementById("filter-input-data");
+        let oa = document.getElementById("filter-input-oa");
+        let rec = document.getElementById("filter-input-rec");
+        let vendor = document.getElementById("filter-input-vendor");
+        let note = document.getElementById("filter-input-note");
         
         let searchString;
         let column;
         let filtered = collectionListOriginal;
 
-        if (formData.hasOwnProperty("filter-input-resource")) {
-          searchString = formData.get("filter-input-resource");
+        if (resource !== null && resource.value !== "") {
+          searchString = resource.value;
           column = "Resource Type";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
         }
-        if (formData.hasOwnProperty("filter-input-bib")) {
-          searchString = formData.get("filter-input-bib");
+        if (bib !== null && bib.value !== "") {
+          searchString = bib.value;
           column = "Bib Source";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
         }
-        if (formData.hasOwnProperty("filter-input-update")) {
-          searchString = formData.get("filter-input-update");
+        if (update !== null && update.value !== "")  {
+          searchString = update.value;
           column = "Update Frequency";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
         }
-        if (formData.hasOwnProperty("filter-input-active")) {
-          searchString = formData.get("filter-input-active");
+        if (active !== null && active.value !== "") {
+          searchString = active.value;
           column = "Active?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-perp")) {
-          searchString = formData.get("filter-input-perp");
+        if (perp !== null && perp.value !== "") {
+          searchString = perp.value;
           column = "Perpetual?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-agg")) {
-          searchString = formData.get("filter-input-agg");
+        if (agg !== null && agg.value !== "") {
+          searchString = agg.value;
           column = "Aggregator?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-data")) {
-          searchString = formData.get("filter-input-data");
+        if (data !== null && data.value !== "") {
+          searchString = data.value;
           column = "Data Sync?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-oa")) {
-          searchString = formData.get("filter-input-oa");
+        if (oa !== null && oa.value !== "") {
+          searchString = oa.value;
           column = "OA?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-rec")) {
-          searchString = formData.get("filter-input-rec");
+        if (rec !== null && rec.value !== "") {
+          searchString = rec.value ;
           column = "Reclamation?";
           searchString = getYesNoSearchString(searchString);
           filtered = filtered.filter(item => (
             item[column] === searchString));
         }
-        if (formData.hasOwnProperty("filter-input-vendor")) {
-          searchString = formData.get("filter-input-vendor");
+        if (vendor !== null && vendor.value !== "") {
+          searchString = vendor.value ;
           column = "Vendor";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
         }
-        if (formData.hasOwnProperty("filter-input-note")) {
-          searchString = formData.get("filter-input-note");
+        if (note !== null && note.value !== "") {
+          searchString = note.value;
           column = "Note";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
