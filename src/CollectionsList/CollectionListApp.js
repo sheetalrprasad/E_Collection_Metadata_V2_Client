@@ -14,6 +14,7 @@ const CollectionListApp = () => {
     const navigate = useNavigate();
 
     const filterOptions = [
+      { value: 'Collection Name', label: 'Collection Name'},
       { value: 'Resource Type', label: 'Resource Type' },
       { value: 'Bib Source', label: 'Bib Source' },
       { value: 'Update Frequency', label: 'Update Frequency' },
@@ -93,6 +94,7 @@ const CollectionListApp = () => {
 
       const handleColumnFilter = (e) => {
         e.preventDefault();
+        let name = document.getElementById("filter-input-name");
         let resource = document.getElementById("filter-input-resource");
         let bib = document.getElementById("filter-input-bib");
         let update = document.getElementById("filter-input-update");
@@ -109,6 +111,12 @@ const CollectionListApp = () => {
         let column;
         let filtered = collectionListOriginal;
 
+        if (name !== null && name.value !== "") {
+          searchString = name.value;
+          column = "Collection Name";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
         if (resource !== null && resource.value !== "") {
           searchString = resource.value;
           column = "Resource Type";
@@ -221,66 +229,67 @@ const CollectionListApp = () => {
 
         {
           showFilter  ? 
-            <div>
-              <div className="input-group mb-8">
+            <div className='filter-section'>
+              <div className='filter-select'>
                 <Select
                   options={filterOptions}
                   value={selectedFilters}
                   placeholder='Select Filters'
                   onChange = { (e) => setSelectedFilters(e) }
-                  showCheckbox={true}
                   isMulti={true}
-                  name="filter"
-                  id="filter"
-                  
-                />
+                  name="filter-dropdown"
+                  id="filter-dropdown" />
               </div>
-              <div>
-                { selectedFilters.length > 0 ?
-                <form id="filter-form" onSubmit={handleColumnFilter}>
+              
+              { selectedFilters.length > 0 ?
+                <form id="filter-form" onSubmit={handleColumnFilter} className='filter-form'>
                   <div className="form-group">
                     { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
+                      <label htmlFor="filter-input-name">Collection Name</label>
+                      <input type="text" className="form-control" id="filter-input-name" placeholder="Enter Collection Name" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[1].value)? <div>  
                       <label htmlFor="filter-input-resource">Resource Type</label>
                       <input type="text" className="form-control" id="filter-input-resource" placeholder="Enter Resource Type" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[1].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[2].value) ? <div>
                       <label htmlFor="filter-input-bib">Bib Source</label>
                       <input type="text" className="form-control" id="filter-input-bib" placeholder="Enter Bib Source" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[2].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
                       <label htmlFor="filter-input-update">Update Frequency</label>
                       <input type="text" className="form-control" id="filter-input-update" placeholder="Enter Update Frequency" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
                       <label htmlFor="filter-input-active">Active?</label>
                       <input type="text" className="form-control" id="filter-input-active" placeholder="Enter Y/N" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[5].value) ? <div>
                       <label htmlFor="filter-input-perp">Perpetual?</label>
                       <input type="text" className="form-control" id="filter-input-perp" placeholder="Enter Y/N/Some" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[5].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[6].value) ? <div>
                       <label htmlFor="filter-input-agg">Aggregator?</label>
                       <input type="text" className="form-control" id="filter-input-agg" placeholder="Enter Y/N" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[6].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[7].value) ? <div>
                       <label htmlFor="filter-input-data">Data Sync?</label>
                       <input type="text" className="form-control" id="filter-input-data" placeholder="Enter Y/N" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[7].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[8].value) ? <div>
                       <label htmlFor="filter-input-oa">OA?</label>
                       <input type="text" className="form-control" id="filter-input-oa" placeholder="Enter Y/N" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[8].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[9].value) ? <div>
                       <label htmlFor="filter-input-rec">Reclamation?</label>
                       <input type="text" className="form-control" id="filter-input-rec" placeholder="Enter Y/N" />
 
                       </div> : <></>  } 
-                    { selectedFilters.find(e => e.value === filterOptions[9].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[10].value) ? <div>
                       <label htmlFor="filter-input-vendor">Vendor</label>
                       <input type="text" className="form-control" id="filter-input-vendor" placeholder="Enter Vendor" />
                       </div> : <></>  }
-                    { selectedFilters.find(e => e.value === filterOptions[10].value) ? <div>
+                    { selectedFilters.find(e => e.value === filterOptions[11].value) ? <div>
                       <label htmlFor="filter-input-note">Note</label>
                       <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
                       </div> : <></>  }
@@ -289,8 +298,8 @@ const CollectionListApp = () => {
                     <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
                   </div>
                 </form>: <></>
-                }
-              </div>
+              }
+              
             </div> : <></>
         }
 
