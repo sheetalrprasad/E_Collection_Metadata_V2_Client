@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
+import Select from "react-select";
 import { E_COLLECTIONS_ADD_URL, E_COLLECTIONS_DELETE_URL, E_COLLECTIONS_EDIT_URL, E_COLLECTIONS_URL, SEARCH_ALMA_URL } from '../Constants/constants';
 
 function EcollectionHome () {
@@ -12,6 +13,16 @@ function EcollectionHome () {
     const navigate = useNavigate();
 
     const [allowPage, setAllowPage] = useState(false);
+
+    const filterOptions = [
+      { value: 'Collection Name', label: 'Collection Name' },
+      { value: '973 in Bib?', label: '973 in Bib?' },
+      { value: '973 Norm Rule?', label: '973 Norm Rule?' },
+      { value: 'IZ Only?', label: 'IZ Only?' },
+      { value: 'Note', label: 'Note'}
+    ];
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
     
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user');
@@ -64,41 +75,70 @@ function EcollectionHome () {
         deletePost();
       };
 
-      const handleColumnFilter = (column) => {
-
-        let searchString = document.getElementById("filter-input").value;
-        let filtered;
-        if (column === "973inAllBIB" || column === "973NormRule" || column === "IZonly?" ) {
+      const getYesNoSearchString = (searchString) => {
         if (searchString.toLowerCase() === "y") {
-            searchString = 1;
+            return 1;
         }else if (searchString.toLowerCase() === "n") {
-            searchString = 0;
+            return 0;
         }
+      };
 
-        filtered = collectionListOriginal.filter(item => (
-          item[column] === searchString
-        ));
-
-      } else{
-
-        filtered = collectionListOriginal.filter(item => (
-          item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim() )
-        ));
-      }
+      const handleFilter = (e) => {
+        e.preventDefault();
+        let name = document.getElementById("filter-input-name");
+        let bib = document.getElementById("filter-input-bib");
+        let norm = document.getElementById("filter-input-norm");
+        let iz = document.getElementById("filter-input-iz");
+        let note = document.getElementById("filter-input-note");
         
-        setCollectionList(filtered);
+        let searchString;
+        let column;
+        let filtered = collectionListOriginal;
+  
+          if (name !== null && name.value !== "") {
+            searchString = name.value;
+            column = "973Value";
+            filtered = filtered.filter(item => (
+              item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+          }
+          if (bib !== null && bib.value !== "") {
+            searchString = bib.value;
+            column = "973inAllBIB";
+            searchString = getYesNoSearchString(searchString);
+            filtered = filtered.filter(item => (
+              item[column] === searchString));
+          }
+          if (norm !== null && norm.value !== "") {
+            searchString = norm.value;
+            column = "973NormRule";
+            searchString = getYesNoSearchString(searchString);
+            filtered = filtered.filter(item => (
+              item[column] === searchString));
+          }
+          if (iz !== null && iz.value !== "")  {
+            searchString = iz.value;
+            column = "IZonly?";
+            searchString = getYesNoSearchString(searchString);
+            filtered = filtered.filter(item => (
+              item[column] === searchString));
+          }
+          if (note !== null && note.value !== "") {
+            searchString = note.value;
+            column = "Note";
+            filtered = filtered.filter(item => (
+              item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+          }
+          
+          setCollectionList(filtered);
       }
-
-      const handleCancelFilter = () => {
+  
+      const handleReset = () => {
         setCollectionList(collectionListOriginal);
-        document.getElementById("filter-input").value = "";
+        setSelectedFilters([]);
       }
 
       if (allowPage) {
         return <div className="collections table-responsive-sm">
-          
-        
-
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -113,25 +153,55 @@ function EcollectionHome () {
           </div>
         </nav>
 
+        
         {
           showFilter  ? 
-            <div>
-              <div className="input-group mb-8">
-              <input type="text" className="form-control" id="filter-input" placeholder="Enter you text" aria-label="Collection Name" aria-describedby="basic-addon2" />
-              <div className="input-group-addon2 ">
-                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
-              </div>
+            <div className='filter-section'>
+              <div className='filter-select'>
+                <Select
+                  options={filterOptions}
+                  value={selectedFilters}
+                  placeholder='Select Filters'
+                  onChange = { (e) => setSelectedFilters(e) }
+                  isMulti={true}
+                  name="filter-dropdown"
+                  id="filter-dropdown" />
               </div>
 
-              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("973inAllBIB")}>973 in Bib?</button>
-              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("973NormRule")}>973 Norm Rule?</button>
-              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("IZonly?")}>IZ Only?</button>
-              <button className='filter-button btn btn-outline-primary' onClick={ ()=> handleColumnFilter("Note")}>Note</button>
-              <br/>
-              <br/>
-            </div> : <></>
-        }
+              { selectedFilters.length > 0 ?
+                  <form id="filter-form" onSubmit={handleFilter} className='filter-form'>
+                    <div className="form-group">
+                      { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
+                        <label htmlFor="filter-input-name">Collection Name</label>
+                        <input type="text" className="form-control" id="filter-input-name" placeholder="Enter Collection Name" />
+                        </div> : <></>  }
+                      { selectedFilters.find(e => e.value === filterOptions[1].value)? <div>  
+                        <label htmlFor="filter-input-bib">973 in Bib?</label>
+                        <input type="text" className="form-control" id="filter-input-bib" placeholder="Enter Y/N" />
+                        </div> : <></>  }
+                      { selectedFilters.find(e => e.value === filterOptions[2].value) ? <div>
+                        <label htmlFor="filter-input-norm">973 Norm Rule?</label>
+                        <input type="text" className="form-control" id="filter-input-norm" placeholder="Enter Y/N" />
+                        </div> : <></>  }
+                      { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
+                        <label htmlFor="filter-input-iz">IZ Only?</label>
+                        <input type="text" className="form-control" id="filter-input-iz" placeholder="Enter Y/N" />
+                        </div> : <></>  }
+                      { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
+                        <label htmlFor="filter-input-note">Note</label>
+                        <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
+                        </div> : <></>  }
+                      
+                      <input type="submit" className="btn btn-outline-primary" value="Apply" />
+                      <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
+                    </div>
+                  </form>: <></>
+              }
+                  
+              </div> : <></>
+            }
 
+      <br/>
       <h3>E-Collections with 973</h3>
 
           <table className='table table-bordered table-hover'>

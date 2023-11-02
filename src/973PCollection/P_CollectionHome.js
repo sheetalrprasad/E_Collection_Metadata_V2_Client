@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios';
+import Select from "react-select";
 import { P_COLLECTIONS_ADD_URL, P_COLLECTIONS_DELETE_URL, P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL, SEARCH_ALMA_URL } from '../Constants/constants';
 
 
@@ -12,6 +13,14 @@ function PcollectionHome () {
     const [showFilter, setShowFilter] = useState(false);
     const navigate = useNavigate();
     const [allowPage, setAllowPage] = useState(false);
+
+    const filterOptions = [
+      { value: 'Collection Name', label: 'Collection Name' },
+      { value: 'Note', label: 'Note'}
+    ];
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
+
     
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user');
@@ -28,6 +37,7 @@ function PcollectionHome () {
           try {
             const { data } = await axios.get(P_COLLECTIONS_URL);
             setCollectionList(data);
+            setCollectionListOriginal(data);
           } catch (err) {
             console.error(err);
           }
@@ -63,19 +73,37 @@ function PcollectionHome () {
         deletePost();
       };
 
-      const handleFilter = () => {
-        let searchString = document.getElementById("filter-input").value;
-        const filtered = collectionList.filter(item => (
-          item.CollectionName.toLowerCase().includes(searchString.toLowerCase())
-        ));
-        setCollectionListOriginal(collectionList);
-        setCollectionList(filtered);
+      const handleFilter = (e) => {
+        e.preventDefault();
+        let name = document.getElementById("filter-input-name");
+        let note = document.getElementById("filter-input-note");
+        
+        let searchString;
+        let column;
+        let filtered = collectionListOriginal;
+  
+          if (name !== null && name.value !== "") {
+            searchString = name.value;
+            column = "CollectionName";
+            filtered = filtered.filter(item => (
+              item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+          }
+         
+          if (note !== null && note.value !== "") {
+            searchString = note.value;
+            column = "Note";
+            filtered = filtered.filter(item => (
+              item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+          }
+          
+          setCollectionList(filtered);
+      }
+  
+      const handleReset = () => {
+        setCollectionList(collectionListOriginal);
+        setSelectedFilters([]);
       }
 
-      const handleCancelFilter = () => {
-        setCollectionList(collectionListOriginal);
-        document.getElementById("filter-input").value = "";
-      }
 
       if(allowPage){
 
@@ -97,15 +125,40 @@ function PcollectionHome () {
 
         {
           showFilter  ? 
-            <div className="input-group mb-8">
-              <input type="text" className="form-control" id="filter-input" placeholder="Collection Name" aria-label="Collection Name" aria-describedby="basic-addon2" />
-              <div className="input-group-addon2 ">
-                <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-                <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
+            <div className='filter-section'>
+              <div className='filter-select'>
+                <Select
+                  options={filterOptions}
+                  value={selectedFilters}
+                  placeholder='Select Filters'
+                  onChange = { (e) => setSelectedFilters(e) }
+                  isMulti={true}
+                  name="filter-dropdown"
+                  id="filter-dropdown" />
               </div>
-            </div> : <></>
-        }
 
+              { selectedFilters.length > 0 ?
+                  <form id="filter-form" onSubmit={handleFilter} className='filter-form'>
+                    <div className="form-group">
+                      { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
+                        <label htmlFor="filter-input-name">Collection Name</label>
+                        <input type="text" className="form-control" id="filter-input-name" placeholder="Enter Collection Name" />
+                        </div> : <></>  }
+                      { selectedFilters.find(e => e.value === filterOptions[1].value) ? <div>
+                        <label htmlFor="filter-input-note">Note</label>
+                        <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
+                        </div> : <></>  }
+                      
+                      <input type="submit" className="btn btn-outline-primary" value="Apply" />
+                      <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
+                    </div>
+                  </form>: <></>
+              }
+                  
+              </div> : <></>
+            }
+
+          <br/>
           <h3>P-Collections with 973</h3>
 
           <table className='table table-bordered table-hover'>

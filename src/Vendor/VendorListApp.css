@@ -30,3 +30,17 @@
     text-align: left;
     padding: 1%;
 }
+
+.filter-section {
+    width: 25%;
+    margin: auto;
+    padding-top: 1%;
+}
+
+.filter-select {
+    padding-left: 10px;
+}
+
+.filter-form label{
+    margin-top: 2%;
+}

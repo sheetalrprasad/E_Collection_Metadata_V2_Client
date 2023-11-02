@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import Select from "react-select";
 import { VENDOR_ADD_URL, VENDOR_DELETE_URL, VENDOR_EDIT_URL, VENDOR_URL } from '../Constants/constants';
 import './VendorListApp.css';
 
@@ -11,6 +12,18 @@ const VendorListApp = () => {
     const [vendorListOriginal, setVendorListOriginal] = useState([]);
     const [allowPage, setAllowPage] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
+
+    const filterOptions = [
+      { value: 'Vendor Name', label: 'Vendor Name'},
+      { value: 'Vendor Web', label: 'Vendor Web' },
+      { value: 'User Name', label: 'User Name' },
+      { value: 'Password', label: 'Update Frequency' },
+      { value: 'Note', label: 'Note' },
+      { value: 'Contact', label: 'Contact' },
+    ];
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
+
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -29,6 +42,8 @@ const VendorListApp = () => {
             const { data } = await axios.get(VENDOR_URL);
             
             setVendorList(data);
+            setVendorListOriginal(data);
+
           } catch (err) {
             console.error(err);
           }
@@ -36,19 +51,64 @@ const VendorListApp = () => {
         fetch();
       }, []);
 
-    const handleFilter = () => {
-      let searchString = document.getElementById("filter-input").value;
-      const filtered = vendorList.filter(item => (
-          item["Vendor Name"].toLowerCase().includes(searchString.toLowerCase())
-    ));
-    setVendorListOriginal(vendorList);
-    setVendorList(filtered);
+    const handleFilter = (e) => {
+      e.preventDefault();
+      let name = document.getElementById("filter-input-name");
+      let web = document.getElementById("filter-input-web");
+      let username = document.getElementById("filter-input-username");
+      let password = document.getElementById("filter-input-password");
+      let note = document.getElementById("filter-input-note");
+      let contact = document.getElementById("filter-input-contact");
+      
+      let searchString;
+      let column;
+      let filtered = vendorListOriginal;
+
+        if (name !== null && name.value !== "") {
+          searchString = name.value;
+          column = "Vendor Name";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (web !== null && web.value !== "") {
+          searchString = web.value;
+          column = "Vendor Web";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (username !== null && username.value !== "") {
+          searchString = username.value;
+          column = "Vendor Web UserName";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (password !== null && password.value !== "")  {
+          searchString = password.value;
+          column = "Vendor Web PWD";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (note !== null && note.value !== "") {
+          searchString = note.value;
+          column = "Note";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (contact !== null && contact.value !== "") {
+          searchString = contact.value ;
+          column = "Vendor Contact";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        
+        setVendorList(filtered);
     }
 
-    const handleCancelFilter = () => {
-    setVendorList(vendorListOriginal);
-    document.getElementById("filter-input").value = "";
+    const handleReset = () => {
+      setVendorList(vendorListOriginal);
+      setSelectedFilters([]);
     }
+
 
     const redirectEdit = (data) => {
         navigate(VENDOR_EDIT_URL, { state: data });
@@ -78,6 +138,7 @@ const VendorListApp = () => {
         deletePost();
     };
 
+    
 
     if(allowPage) {
     return <div className="collections table-responsive-sm">
@@ -90,7 +151,6 @@ const VendorListApp = () => {
                     <div className="navbar-nav">
                     <a className="nav-item nav-link" href={ VENDOR_URL }>View/Edit</a>
                     <button className="nav-item nav-link nav-button-filter" onClick={() => setShowFilter(showFilter => !showFilter)}>Filter & Export</button>
-                    {/* to do */}
                     <a className="nav-item nav-link" href={ VENDOR_ADD_URL }>Add New</a>
                     </div>
                 </div>
@@ -98,16 +158,57 @@ const VendorListApp = () => {
 
             {
               showFilter  ? 
-              <div className="input-group mb-8">
-                <input type="text" className="form-control" id="filter-input" placeholder="Vendor Name" aria-label="Vendor Name" aria-describedby="basic-addon2" />
-                <div className="input-group-addon2 ">
-                  <button id = "filter-button" className="btn btn-outline-primary" type="button" onClick={ () => handleFilter() }>Filter</button>
-                  <button id = "cancel-button" className="btn btn-outline-danger" type="button" onClick={ () => handleCancelFilter() }>Cancel</button>
-                </div>
-              </div> : <></>
-          }
+                <div className='filter-section'>
+                  <div className='filter-select'>
+                    <Select
+                      options={filterOptions}
+                      value={selectedFilters}
+                      placeholder='Select Filters'
+                      onChange = { (e) => setSelectedFilters(e) }
+                      isMulti={true}
+                      name="filter-dropdown"
+                      id="filter-dropdown" />
+                  </div>
+                  
+                  { selectedFilters.length > 0 ?
+                    <form id="filter-form" onSubmit={handleFilter} className='filter-form'>
+                      <div className="form-group">
+                        { selectedFilters.find(e => e.value === filterOptions[0].value)? <div>  
+                          <label htmlFor="filter-input-name">Vendor Name</label>
+                          <input type="text" className="form-control" id="filter-input-name" placeholder="Enter Vendor Name" />
+                          </div> : <></>  }
+                        { selectedFilters.find(e => e.value === filterOptions[1].value)? <div>  
+                          <label htmlFor="filter-input-web">Vendor Web</label>
+                          <input type="text" className="form-control" id="filter-input-web" placeholder="Enter Vendor Web" />
+                          </div> : <></>  }
+                        { selectedFilters.find(e => e.value === filterOptions[2].value) ? <div>
+                          <label htmlFor="filter-input-username">User Name</label>
+                          <input type="text" className="form-control" id="filter-input-username" placeholder="Enter User Name" />
+                          </div> : <></>  }
+                        { selectedFilters.find(e => e.value === filterOptions[3].value) ? <div>
+                          <label htmlFor="filter-input-password">Password</label>
+                          <input type="text" className="form-control" id="filter-input-password" placeholder="Enter Password" />
+                          </div> : <></>  }
+                        { selectedFilters.find(e => e.value === filterOptions[4].value) ? <div>
+                          <label htmlFor="filter-input-note">Note</label>
+                          <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
+                          </div> : <></>  }
+                        { selectedFilters.find(e => e.value === filterOptions[5].value) ? <div>
+                        <label htmlFor="filter-input-contact">Note</label>
+                        <input type="text" className="form-control" id="filter-input-contact" placeholder="Enter Contact" />
+                        </div> : <></>  }
+                        
+                        <input type="submit" className="btn btn-outline-primary" value="Apply" />
+                        <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
+                      </div>
+                    </form>: <></>
+                  }
+                  
+                </div> : <></>
+            }
 
 
+        <br />
         <h3>Vendors</h3>
 
         <table className='table table-bordered table-hover'>
