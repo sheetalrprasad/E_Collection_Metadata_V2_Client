@@ -148,6 +148,7 @@ const CollectionListEdit = () => {
                   <th scope="col">Resource Type</th>
                   <th scope="col">Bib Source</th>
                   <th scope="col">Update Frequency</th>
+                  <th scope="col">PO Linked?</th>
                   <th scope="col">Active?</th>
                   <th scope="col">Perpetual?</th>
                   <th scope="col">Aggregator?</th>
@@ -155,6 +156,7 @@ const CollectionListEdit = () => {
                   <th scope="col">OA?</th>
                   <th scope="col">Reclamation?</th>
                   <th scope="col">Vendor</th>
+                  <th scope="col">Lendable Note</th>
                   <th className="noteCollection" scope="col">Note</th>
                   </tr>
 
@@ -164,6 +166,7 @@ const CollectionListEdit = () => {
                   <td>{collectionData["Resource Type"]}</td>
                   <td>{collectionData["Bib Source"]}</td>
                   <td>{collectionData["Update Frequency"]}</td>
+                  <td>{collectionData["PO Linked?"]? 'Y' : 'N'}</td>
                   <td>{collectionData["Active?"]? 'Y': 'N'}</td>
                   <td>{handlePerpetual(collectionData)}</td>
                   <td>{collectionData["Aggregator?"]? 'Y': 'N'}</td>
@@ -171,6 +174,7 @@ const CollectionListEdit = () => {
                   <td>{collectionData["OA?"]? 'Y': 'N'}</td>
                   <td>{collectionData["Reclamation?"]? 'Y': 'N'}</td>
                   <td>{collectionData["Vendor"]}</td>
+                  <td>{collectionData["Lendable Note"]}</td>
                   <td className="noteCollection">{collectionData["Note"]}</td>
                   </tr>
               </tbody>
@@ -223,17 +227,6 @@ const CollectionListEdit = () => {
                       name="resourceType"
                       id="resourceType"
                     />
-                  {/* <select name="resourceType" id="resourceType"  className="form-select" multiple>
-                      <option value="book">Book</option>
-                      <option value="audio">Audio</option>
-                      <option value="streaming audio">Streaming Audio</option>
-                      <option value="video">Video</option>
-                      <option value="streaming video">Streaming Video</option>
-                      <option value="journal">Journal</option>
-                      <option value="newspaper">Newspaper</option>
-                      <option value="govdoc">Gov Doc</option>
-                      <option value="masterthesis">Master Thesis</option>
-                  </select> */}
                   </div><br/>
               </div>
 
@@ -260,6 +253,18 @@ const CollectionListEdit = () => {
                       <option value="monthly">Monthly</option>
                       <option value="one time">One time</option>
                       <option value="-">?</option>
+                  </select>
+                  </div><br/>
+              </div>
+
+
+              <div className="form-group">
+                  <div className="col-sm-3">
+                  <input type="checkbox" id="pocheck" name="pocheck" className="form-check-input" onChange={handleCheckboxChange}/>
+                  <label className="control-label col-sm-4" htmlFor="po">PO Linked?</label>
+                  <select name="po" id="po" className="form-select">
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
                   </select>
                   </div><br/>
               </div>
@@ -340,6 +345,19 @@ const CollectionListEdit = () => {
                   {
                       vendorNames.map(vendor => <option key={vendor['Vendor Name']} value={vendor['Vendor Name']}>{vendor['Vendor Name']} </option>)
                   }
+                  </select>
+                  </div><br/>
+              </div>
+
+              <div className="form-group">
+                  <div className="col-sm-3">
+                  <input type="checkbox" id="lendablecheck" name="lendablecheck" className="form-check-input" onChange={handleCheckboxChange} />
+                  <label className="control-label col-sm-4" htmlFor="lendable">Lendable Note</label>
+                  <select name="lendable" id="lendable" className="form-select">
+                      <option value="">?</option>
+                      <option value="LendableInternational">Lendable International</option>
+                      <option value="Lendable Country">Lendable Country</option>
+                      <option value="LocalOnly">Local Only</option>
                   </select>
                   </div><br/>
               </div>

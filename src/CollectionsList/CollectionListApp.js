@@ -25,7 +25,9 @@ const CollectionListApp = () => {
       { value: 'OA?', label: 'OA?' },
       { value: 'Reclamation?', label: 'Reclamation?' },
       { value: 'Vendor', label: 'Vendor' },
-      { value: 'Note', label: 'Note'}
+      { value: 'Note', label: 'Note'},
+      { value: 'PO Linked?', label: 'PO Linked?'},
+      { value: 'Lendable Note', label: 'Lendable Note'}
     ];
 
     const [selectedFilters, setSelectedFilters] = useState([]);
@@ -106,6 +108,8 @@ const CollectionListApp = () => {
         let rec = document.getElementById("filter-input-rec");
         let vendor = document.getElementById("filter-input-vendor");
         let note = document.getElementById("filter-input-note");
+        let po = document.getElementById("filter-input-po");
+        let lendable = document.getElementById("filter-input-lendable");
         
         let searchString;
         let column;
@@ -186,6 +190,19 @@ const CollectionListApp = () => {
         if (note !== null && note.value !== "") {
           searchString = note.value;
           column = "Note";
+          filtered = filtered.filter(item => (
+            item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
+        }
+        if (po !== null && po.value !== "") {
+          searchString = po.value;
+          column = "PO Linked?";
+          searchString = getYesNoSearchString(searchString);
+          filtered = filtered.filter(item => (
+            item[column] === searchString));
+        }
+        if (lendable !== null && lendable.value !== "") {
+          searchString = lendable.value;
+          column = "Lendable Note";
           filtered = filtered.filter(item => (
             item[column] && item[column].toLowerCase().includes(searchString.toLowerCase().trim())));
         }
@@ -293,6 +310,14 @@ const CollectionListApp = () => {
                       <label htmlFor="filter-input-note">Note</label>
                       <input type="text" className="form-control" id="filter-input-note" placeholder="Enter Note" />
                       </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[12].value) ? <div>
+                      <label htmlFor="filter-input-po">Note</label>
+                      <input type="text" className="form-control" id="filter-input-po" placeholder="Enter Y/N" />
+                      </div> : <></>  }
+                    { selectedFilters.find(e => e.value === filterOptions[13].value) ? <div>
+                      <label htmlFor="filter-input-lendable">Note</label>
+                      <input type="text" className="form-control" id="filter-input-lendable" placeholder="Enter Value" />
+                      </div> : <></>  }
                     
                     <input type="submit" className="btn btn-outline-primary" value="Apply" />
                     <button type="button" className="btn btn-outline-danger" onClick={handleReset}>Reset</button>
@@ -315,6 +340,7 @@ const CollectionListApp = () => {
                   <th scope="col">Resource Type</th>
                   <th scope="col">Bib Source</th>
                   <th scope="col">Update Frequency</th>
+                  <th scope="col">PO Linked?</th>
                   <th scope="col">Active?</th>
                   <th scope="col">Perpetual?</th>
                   <th scope="col">Aggregator?</th>
@@ -322,6 +348,7 @@ const CollectionListApp = () => {
                   <th scope="col">OA?</th>
                   <th scope="col">Reclamation?</th>
                   <th scope="col">Vendor</th>
+                  <th scope="col">Lendable Note</th>
                   <th className="noteCollection" scope="col">Note</th>
                   <th scope="col">Edit</th>
                   <th scope="col">Delete</th>
@@ -334,6 +361,7 @@ const CollectionListApp = () => {
                       <td>{item["Resource Type"]}</td>
                       <td>{item["Bib Source"]}</td>
                       <td>{item["Update Frequency"]}</td>
+                      <td>{item["PO Linked?"]? 'Y' : 'N'}</td>
                       <td>{item["Active?"]? 'Y': 'N'}</td>
                       <td>{handlePerpetual(item)}</td>
                       <td>{item["Aggregator?"]? 'Y': 'N'}</td>
@@ -341,6 +369,7 @@ const CollectionListApp = () => {
                       <td>{item["OA?"]? 'Y': 'N'}</td>
                       <td>{item["Reclamation?"]? 'Y': 'N'}</td>
                       <td>{item["Vendor"]}</td>
+                      <td>{item["Lendable Note"]}</td>
                       <td className="noteCollection">{item["Note"]}</td>
                       <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
                       <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>

@@ -28,7 +28,7 @@ function CollectionListAddNew () {
         const form = document.querySelector("form");
         console.log("form: ",form);
         const formData = new FormData(e.target);
-        console.log("formData:",formData);
+        console.log(e.target);
         try{
         const response = await axios.post(ALL_E_COLLECTIONS_ADD_URL,
                 formData,
@@ -135,6 +135,16 @@ function CollectionListAddNew () {
 
                 <div className="form-group">
                     <div className="col-sm-3">
+                    <label className="control-label col-sm-4" htmlFor="po">PO Linked?</label>
+                    <select name="po" id="po" className="form-select">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    </div><br/>
+                </div>
+
+                <div className="form-group">
+                    <div className="col-sm-3">
                     <label className="control-label col-sm-4" htmlFor="active">Active?</label>
                     <select name="active" id="active" className="form-select">
                         <option value="1">Yes</option>
@@ -203,6 +213,18 @@ function CollectionListAddNew () {
                         {
                             vendorNames.map(vendor => <option key={vendor['Vendor Name']} value={vendor['Vendor Name']}>{vendor['Vendor Name']} </option>)
                         }
+                    </select>
+                    </div><br/>
+                </div>
+
+                <div className="form-group">
+                    <div className="col-sm-3">
+                    <label className="control-label col-sm-4" htmlFor="lendable">Lendable Note</label>
+                    <select name="lendable" id="lendable" className="form-select">
+                        <option value="">?</option>
+                        <option value="LendableInternational">Lendable International</option>
+                        <option value="Lendable Country">Lendable Country</option>
+                        <option value="LocalOnly">Local Only</option>
                     </select>
                     </div><br/>
                 </div>
