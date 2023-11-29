@@ -239,7 +239,7 @@ const CollectionListApp = () => {
         link.setAttribute("href", encodedUri);
         let today = new Date();
         let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        link.setAttribute("download", "All E-Collections Export "+date+".csv");
+        link.setAttribute("download", "All Collections Export "+date+".csv");
         document.body.appendChild(link); // Required for FF
         link.click();
       }
