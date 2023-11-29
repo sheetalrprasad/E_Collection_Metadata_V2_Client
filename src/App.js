@@ -21,7 +21,7 @@ import SearchAlma from './SearchAlma/SearchAlma';
 
 
 function App() {
-
+  
   const [authenticated, setAuthenticated] = useState(false);
 
   function logout() {
@@ -35,6 +35,8 @@ function App() {
       setAuthenticated(true);
     }
   }, [authenticated]);
+
+
 
   return (
     <div className="App">

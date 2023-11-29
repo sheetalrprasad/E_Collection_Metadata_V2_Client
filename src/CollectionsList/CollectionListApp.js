@@ -226,6 +226,23 @@ const CollectionListApp = () => {
         }
       }
 
+      const handleExport = () => {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        let header = Object.keys(collectionList[0]).join(",");
+        csvContent += header + "\r\n";
+        collectionList.forEach(function(rowArray){
+          let row = Object.values(rowArray).join(",");
+          csvContent += row + "\r\n";
+        });
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        let today = new Date();
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        link.setAttribute("download", "All E-Collections Export "+date+".csv");
+        document.body.appendChild(link); // Required for FF
+        link.click();
+      }
 
     if (allowPage) {
       return <div className="collections table-responsive-sm">
@@ -324,7 +341,7 @@ const CollectionListApp = () => {
                   </div>
                 </form>: <></>
               }
-              
+              <button type="button" className="btn btn-outline-success export" onClick={handleExport}>Export</button>
             </div> : <></>
         }
 
@@ -353,7 +370,7 @@ const CollectionListApp = () => {
                   <th scope="col">Edit</th>
                   <th scope="col">Delete</th>
                   </tr>
-
+                  
                   {collectionList.map((item, index) => (
                       <tr key={index}>
                       <td>{item["Collection ID"]}</td>
