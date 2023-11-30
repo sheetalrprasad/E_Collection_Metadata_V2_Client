@@ -1,13 +1,13 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import VendorListApp from './Vendor/VendorListApp';
+import VendorListApp from './Vendor/VendorListHome';
 import HomePage from './homepage/home';
 import EcollectionHome from './973ECollection/E_CollectionHome';
 import PcollectionHome from './973PCollection/P_CollectionHome';
 import EcollectionEdit from './973ECollection/E_CollectionEdit';
 import PcollectionEdit from './973PCollection/P_CollectionEdit';
-import CollectionListApp from './CollectionsList/CollectionListApp';
+import CollectionListApp from './CollectionsList/CollectionListHome';
 import CollectionListEdit from './CollectionsList/CollectionListEdit';
 import CollectionListAddNew from './CollectionsList/CollectionListAddNew';
 import Collection973ListApp from './Collection973/Collections973List';
