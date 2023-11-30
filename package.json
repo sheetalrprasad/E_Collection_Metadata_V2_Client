@@ -1,11 +1,11 @@
 {
   "name": "client",
-  "homepage": "https://metadata.sdsu.edu/",
+  "homepage": "https://metadata.sdsu.edu",
   "version": "0.1.0",
   "private": true,
   "options": {
     "allowedHosts": [
-      "http://localhost:3001/",
+      "https://metadata.sdsu.edu/server",
       "https://metadata.sdsu.edu/"
     ]
   },
