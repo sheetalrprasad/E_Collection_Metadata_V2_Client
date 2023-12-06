@@ -6,7 +6,7 @@
   "options": {
     "allowedHosts": [
       "https://metadata.sdsu.edu/server",
-      "https://metadata.sdsu.edu/"
+      "https://metadata.sdsu.edu"
     ]
   },
   "dependencies": {

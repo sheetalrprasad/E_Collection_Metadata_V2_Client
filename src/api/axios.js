@@ -1,5 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'https://metadata.sdsu.edu/server'
+    baseURL: 'https://backend.metadata.sdsu.edu/server'
+    // baseURL: 'http://localhost:3001/server'
 });

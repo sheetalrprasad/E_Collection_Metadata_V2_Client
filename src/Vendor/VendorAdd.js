@@ -28,8 +28,7 @@ function VendorAdd () {
           console.log(JSON.stringify(response?.status));
           if (response?.status===200){
             alert("Add Successful.");
-            navigate(VENDOR_URL);
-            
+            navigate(VENDOR_URL);  
           }else {
             alert("Add Failed.")
           }
