@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./P_Collection.css";
 import axios from '../api/axios';
 import { P_COLLECTIONS_URL, SEARCH_ALMA_URL } from "../Constants/constants";
@@ -8,20 +8,16 @@ const P_COLLECTIONS_ADD_URL = "/pcollections-add";
 
 function PcollectionAddNew () {
     
-    const [msg, setMsg] =  useState(() => {
-      return localStorage.getItem('msg') || ''
-    });
-    
-    useEffect(() => {
-      localStorage.setItem('msg', msg);
-    }, [msg]);
-
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) =>{
+      
+          e.preventDefault();
           const form = document.querySelector("form");
           console.log("form: ",form);
           const formData = new FormData(e.target);
           console.log("formData:",formData);
+
           try{
             const response = await axios.post(P_COLLECTIONS_ADD_URL,
                     formData,
@@ -29,13 +25,15 @@ function PcollectionAddNew () {
                         headers: { 'Content-Type': `application/json`},
                     }
                 );
-           
 
                 console.log(JSON.stringify(response?.status));
                 if (response?.status===200){
-                  setMsg("Add Successful.")
+                  alert("Add Successful.")
+                  navigate("/pcollections")
+
                 }else {
-                  setMsg("Add Failed.")
+                  alert("Add Failed.")
+                  
                 }
                 
         } catch(err){

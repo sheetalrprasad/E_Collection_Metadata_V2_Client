@@ -241,7 +241,7 @@ function EcollectionHome () {
                       <td>{item["973Value"]}</td>
                       <td>{item["973inAllBIB"]? 'Y': 'N'}</td>
                       <td>{item["973NormRule"]? 'Y': 'N'}</td>
-                      <td>{item["IZonly?"]? 'Y': 'N'}</td>
+                      <td>{item["IZOnly?"]?'Y':'N'}</td>
                       <td className="noteCollection">{item["Note"]}</td>
                       <td><button onClick={() => redirectEdit(item)} className="btn btn-link">Edit</button></td>
                       <td><button onClick={() => deleteRecord(item)} className="btn btn-link">Delete</button></td>
