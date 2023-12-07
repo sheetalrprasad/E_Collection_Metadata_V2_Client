@@ -5,7 +5,7 @@
   "private": true,
   "options": {
     "allowedHosts": [
-      "https://metadata.sdsu.edu/server",
+      "https://backend.metadata.sdsu.edu/server",
       "https://metadata.sdsu.edu"
     ]
   },
