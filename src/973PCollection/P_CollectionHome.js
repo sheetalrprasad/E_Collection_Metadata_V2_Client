@@ -70,7 +70,11 @@ function PcollectionHome () {
             alert("Delete Failed.")
           }
         };
-        deletePost();
+
+        let answer = window.confirm("Delete "+data["CollectionName"]+"?");
+        if(answer){
+          deletePost();
+        }
       };
 
       const handleFilter = (e) => {

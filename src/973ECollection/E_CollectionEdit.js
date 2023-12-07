@@ -1,19 +1,20 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./E_Collection.css";
 import axios from '../api/axios';
-import { E_COLLECTIONS_EDIT_URL } from '../Constants/constants';
+import { E_COLLECTIONS_EDIT_URL, E_COLLECTIONS_URL } from '../Constants/constants';
 
 
 function EcollectionEdit () {
     
+    const navigate = useNavigate();
     const [collectionData, setCollectionData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
     });
-    const [textNote, setTextNote] = useState();
+    const [textNote, setTextNote] = useState('');
     const location = useLocation();
     const data = location.state;
     
@@ -32,6 +33,7 @@ function EcollectionEdit () {
     
     const handleSubmit = async (e) =>{
 
+        e.preventDefault();
         const form = document.querySelector("form");
         console.log("form: ",form);
         const formData = new FormData(e.target);
@@ -45,7 +47,8 @@ function EcollectionEdit () {
               );
               
               if (response?.status===200){
-                setMsg("Update Successful.")
+                alert("Update Successful.");
+                navigate(E_COLLECTIONS_URL);
               }else {
                 setMsg("Update Failed.")
               }
@@ -153,7 +156,8 @@ function EcollectionEdit () {
                       <label className="control-label col-sm-8" htmlFor="e973note">Note</label>
                       <div className="text-area">
                         <textarea type="text" name="e973note" id="e973note" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
-                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
+                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]) }}>Copy Note</button>
+                        <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(textNote+" "+new Date().toLocaleDateString()+" ") }}>Add Date</button>
                       </div>
                     </div>
                   </div>

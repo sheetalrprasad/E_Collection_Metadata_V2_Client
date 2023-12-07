@@ -52,7 +52,6 @@ function EcollectionHome () {
       };
 
       const deleteRecord = (data) => {
-        console.log(data["973Value"]);
         
         async function deletePost() {
           try {
@@ -72,7 +71,11 @@ function EcollectionHome () {
             alert("Delete Failed.")
           }
         };
-        deletePost();
+
+        let answer = window.confirm("Delete "+data["973Value"]+"?");
+        if(answer){
+            deletePost();
+        }
       };
 
       const getYesNoSearchString = (searchString) => {

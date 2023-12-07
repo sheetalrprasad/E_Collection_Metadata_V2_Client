@@ -1,18 +1,19 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./VendorListApp.css";
 import axios from '../api/axios';
-import { VENDOR_EDIT_URL } from '../Constants/constants';
+import { VENDOR_EDIT_URL, VENDOR_URL } from '../Constants/constants';
 
 function VendorEdit () {
     
+    const navigate = useNavigate();
     const [vendorData, setVendorData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
     });
-    const [textNote, setTextNote] = useState();
+    const [textNote, setTextNote] = useState('');
     const location = useLocation();
     const data = location.state;
     
@@ -31,6 +32,7 @@ function VendorEdit () {
     
     const handleSubmit = async (e) =>{
 
+        e.preventDefault();
         const form = document.querySelector("form");
         console.log("form: ",form);
         const formData = new FormData(e.target);
@@ -44,7 +46,8 @@ function VendorEdit () {
               );
               
               if (response?.status===200){
-                setMsg("Update Successful.")
+                alert("Update Successful.")
+                navigate(VENDOR_URL);
               }else {
                 setMsg("Update Failed.")
               }
@@ -143,7 +146,8 @@ function VendorEdit () {
                       <label className="control-label col-sm-8" htmlFor="e973note">Note</label>
                       <div className="text-area">
                           <textarea type="text" name="vendornote" id="vendornote" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
-                          <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(vendorData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
+                          <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(vendorData["Note"]) }}>Copy Note</button>
+                          <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(textNote+" "+new Date().toLocaleDateString()+" ") }}>Add Date</button>
                       </div>
                       </div>
                   </div>

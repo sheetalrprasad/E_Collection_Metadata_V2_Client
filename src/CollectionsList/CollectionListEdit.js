@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from '../api/axios';
 import Select  from "react-select";
 import "./CollectionListApp.css";
-import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL} from '../Constants/constants';
+import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL, ALL_E_COLLECTIONS_URL} from '../Constants/constants';
 import AlmaSubPageDetails from '../SearchAlma/AlmaSubPageDetails';
 
 
@@ -17,7 +17,7 @@ const CollectionListEdit = () => {
     const [msg, setMsg] =  useState(() => {
       return localStorage.getItem('msg') || ''
     });
-    const [textNote, setTextNote] = useState();
+    const [textNote, setTextNote] = useState('');
 
     const [almaDetails, setAlmaDetails] = useState([]);
     const [errorData, setErrorData] = useState('');
@@ -71,6 +71,8 @@ const CollectionListEdit = () => {
     }
     
     const handleSubmit = async (e) =>{
+        e.preventDefault();
+
         const form = document.querySelector("form");
         console.log("form: ",form);
         const formData = new FormData(e.target);
@@ -84,7 +86,14 @@ const CollectionListEdit = () => {
                       headers: { 'Content-Type': `application/json`},
                   }
           ).then((response) => {
-            response.status===200 ? setMsg("Update Successful.") : setMsg("Update Failed.");
+            
+            if(response.status===200){
+              alert("Update Successful.");
+              window.location = ALL_E_COLLECTIONS_URL;
+            } else{
+              setMsg("Update Failed.");
+            }
+    
           }).catch((error) => {
             console.log("Error:",error);
             setMsg("Update Failed.");
@@ -368,7 +377,9 @@ const CollectionListEdit = () => {
                   <label className="control-label col-sm-8" htmlFor="enote">Note</label>
                   <div className="text-area">
                       <textarea type="text" name="enote" id="enote" className="form-control flex-child" rows="3" value={textNote} onChange={ (e) => handleTextChange(e) }></textarea>
-                      <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]+" "+new Date().toLocaleString() + " ") }}>Copy Note</button>
+                      <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(collectionData["Note"]) }}>Copy Note</button>
+                      <button type="button" id="copy-button" className="btn btn-info btn-sm flex-child" onClick= { () => { setTextNote(textNote+" "+new Date().toLocaleDateString()+" ") }}>Add Date</button>
+
                   </div>
                   </div>
               </div>

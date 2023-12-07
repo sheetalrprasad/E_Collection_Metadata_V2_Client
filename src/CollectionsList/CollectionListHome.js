@@ -81,7 +81,11 @@ const CollectionListApp = () => {
             alert("Delete Failed.")
           }
         };
-        deletePost();
+
+        let answer = window.confirm("Delete "+data["Collection Name"]+"?");
+        if(answer){
+          deletePost();
+        }
       };
 
       const getYesNoSearchString = (searchString) => {

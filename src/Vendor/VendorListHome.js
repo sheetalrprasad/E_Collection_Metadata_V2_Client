@@ -135,7 +135,11 @@ const VendorListApp = () => {
             alert("Delete Failed.")
           }
         };
-        deletePost();
+
+        let answer = window.confirm("Delete "+data["Vendor Name"]+"?");
+        if(answer){
+          deletePost();
+        }
     };
 
     const handleExport = () => {
