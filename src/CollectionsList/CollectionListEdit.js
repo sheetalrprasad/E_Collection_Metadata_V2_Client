@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from '../api/axios';
 import Select  from "react-select";
 import "./CollectionListApp.css";
-import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL, ALL_E_COLLECTIONS_URL} from '../Constants/constants';
+import {ALL_E_COLLECTIONS_EDIT_URL, ALL_VENDOR_NAME_URL, SEARCH_ALMA_API_URL} from '../Constants/constants';
 import AlmaSubPageDetails from '../SearchAlma/AlmaSubPageDetails';
 
 
@@ -55,8 +55,20 @@ const CollectionListEdit = () => {
     }, []);
 
     useEffect(() => {
-      console.log(data);
-      setCollectionData(data);
+      axios.get("/allcollections/collectionid/"+data["Collection ID"],
+      {
+          headers: { 'Content-Type': `application/json`},
+      }
+      ).then((response) => {
+        
+        if(response.status===200){
+          setCollectionData(response.data[0]); 
+        } else {
+          setCollectionData(data);
+        }
+      }).catch((error) => {
+        console.log("Error:",error);
+      });
     }, [data]);
 
     useEffect(() => {
@@ -89,7 +101,7 @@ const CollectionListEdit = () => {
             
             if(response.status===200){
               alert("Update Successful.");
-              window.location = ALL_E_COLLECTIONS_URL;
+              window.location = ALL_E_COLLECTIONS_EDIT_URL;
             } else{
               setMsg("Update Failed.");
             }
