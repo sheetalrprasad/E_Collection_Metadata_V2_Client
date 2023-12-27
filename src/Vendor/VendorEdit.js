@@ -1,13 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./VendorListApp.css";
 import axios from '../api/axios';
 import { VENDOR_EDIT_URL, VENDOR_URL } from '../Constants/constants';
 
 function VendorEdit () {
     
-    const navigate = useNavigate();
     const [vendorData, setVendorData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
@@ -23,7 +22,22 @@ function VendorEdit () {
 
 
     useEffect(() => {
-      setVendorData(data);
+      axios.get("/vendors/vendorid/"+data["Vendor ID"],
+      {
+          headers: { 'Content-Type': `application/json`},
+      }
+      ).then((response) => {
+        
+        if(response.status===200){
+          setVendorData(response.data[0]); 
+        } else {
+          setVendorData(data);
+        }
+      }).catch((error) => {
+        console.log("Error:",error);
+        setVendorData(data);
+      });
+      
     }, [data]);
 
     const handleTextChange = (e) => {
@@ -33,8 +47,6 @@ function VendorEdit () {
     const handleSubmit = async (e) =>{
 
         e.preventDefault();
-        const form = document.querySelector("form");
-        console.log("form: ",form);
         const formData = new FormData(e.target);
     
         try{
@@ -46,12 +58,17 @@ function VendorEdit () {
               );
               
               if (response?.status===200){
-                alert("Update Successful.")
-                navigate(VENDOR_URL);
+                alert("Update Successful. To see 'Vendor ID' changes, please visit to the 'Vendors' page.")
+                if((formData.get("vendorId") === "") || (formData.get("vendorId") === null)){
+                  window.location = VENDOR_EDIT_URL;
+                }
+                else{
+                  window.location = VENDOR_URL;
+                }
               }else {
                 setMsg("Update Failed.")
+                console.log(msg);
               }
-              console.log(msg);
               
         } catch(err){
           console.log(err);

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./E_Collection.css";
 import axios from '../api/axios';
 import { E_COLLECTIONS_EDIT_URL, E_COLLECTIONS_URL } from '../Constants/constants';
@@ -8,7 +8,6 @@ import { E_COLLECTIONS_EDIT_URL, E_COLLECTIONS_URL } from '../Constants/constant
 
 function EcollectionEdit () {
     
-    const navigate = useNavigate();
     const [collectionData, setCollectionData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
@@ -24,7 +23,20 @@ function EcollectionEdit () {
 
 
     useEffect(() => {
-      setCollectionData(data);
+      axios.get("/ecollections/collectionid/"+data["973Value"],
+      {
+          headers: { 'Content-Type': `application/json`},
+      }
+      ).then((response) => {
+        
+        if(response.status===200){
+          setCollectionData(response.data[0]); 
+        } else {
+          setCollectionData(data);
+        }
+      }).catch((error) => {
+        console.log("Error:",error);
+      });
     }, [data]);
 
     const handleTextChange = (e) => {
@@ -34,8 +46,6 @@ function EcollectionEdit () {
     const handleSubmit = async (e) =>{
 
         e.preventDefault();
-        const form = document.querySelector("form");
-        console.log("form: ",form);
         const formData = new FormData(e.target);
     
         try{
@@ -47,10 +57,15 @@ function EcollectionEdit () {
               );
               
               if (response?.status===200){
-                alert("Update Successful.");
-                navigate(E_COLLECTIONS_URL);
+                alert("Update Successful. To see the 'Collection Name' changes please visit the 'E-Collections with 973' page.");
+                if((formData.get("e973name")==="") || (formData.get("e973name")===null)){
+                  window.location = E_COLLECTIONS_EDIT_URL;
+                }else{
+                  window.location = E_COLLECTIONS_URL;
+                }
               }else {
-                setMsg("Update Failed.")
+                alert("Update Failed.")
+                setMsg("To see the Name changes please visit the table page.")
               }
               
         } catch(err){

@@ -25,10 +25,10 @@ function CollectionListAddNew () {
     
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        const form = document.querySelector("form");
-        console.log("form: ",form);
+       
+        
         const formData = new FormData(e.target);
-        console.log(e.target);
+       
         try{
         const response = await axios.post(ALL_E_COLLECTIONS_ADD_URL,
                 formData,
@@ -37,8 +37,6 @@ function CollectionListAddNew () {
                 }
             );
         
-
-            console.log(JSON.stringify(response?.status));
             if (response?.status===200){
                 alert("Add Successful.");
                 navigate("/allcollections");
@@ -58,7 +56,7 @@ function CollectionListAddNew () {
 
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">

@@ -62,7 +62,7 @@ const CollectionListApp = () => {
       };
 
       const deleteRecord = (data) => {
-        console.log(data["Collection ID"]);
+
         async function deletePost() {
           try {
             const response = await axios.delete(ALL_E_COLLECTIONS_DELETE_URL+"/"+data["Collection ID"],
@@ -253,7 +253,7 @@ const CollectionListApp = () => {
 
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">

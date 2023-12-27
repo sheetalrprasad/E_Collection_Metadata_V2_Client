@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./P_Collection.css";
 import axios from '../api/axios';
 import { P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL } from '../Constants/constants';
@@ -8,7 +8,6 @@ import { P_COLLECTIONS_EDIT_URL, P_COLLECTIONS_URL } from '../Constants/constant
 
 function PcollectionEdit () {
     
-    const navigate = useNavigate();
     const [collectionData, setCollectionData] = useState();
     const [isChecked, setIsChecked] = useState(false);
     const [msg, setMsg] =  useState(() => {
@@ -24,8 +23,20 @@ function PcollectionEdit () {
 
 
     useEffect(() => {
-      console.log(data);
-      setCollectionData(data);
+      axios.get("/pcollections/collectionid/"+data["CollectionName"],
+      {
+          headers: { 'Content-Type': `application/json`},
+      }
+      ).then((response) => {
+        
+        if(response.status===200){
+          setCollectionData(response.data[0]); 
+        } else {
+          setCollectionData(data);
+        }
+      }).catch((error) => {
+        console.log("Error:",error);
+      });
     }, [data]);
 
     const handleTextChange = (e) => {
@@ -35,10 +46,8 @@ function PcollectionEdit () {
     const handleSubmit = async (e) =>{
 
           e.preventDefault();
-          const form = document.querySelector("form");
-          console.log("form: ",form);
           const formData = new FormData(e.target);
-          console.log("formData:",formData);
+    
           try{
             const response = await axios.post(P_COLLECTIONS_EDIT_URL,
                     formData,
@@ -48,8 +57,12 @@ function PcollectionEdit () {
                 );
            
                 if (response?.status===200){
-                  alert("Update Successful.");
-                  navigate(P_COLLECTIONS_URL);
+                  alert("Update Successful. To see 'Collection Name' changes, please visit to the 'P-Collections with 973' page. ");
+                  if((formData.get('p973name')===null) || (formData.get('p973name')==='')){
+                    window.location = P_COLLECTIONS_EDIT_URL;
+                  }else{
+                    window.location = P_COLLECTIONS_URL;
+                  }
                 }else {
                   setMsg("Update Failed.")
                 }

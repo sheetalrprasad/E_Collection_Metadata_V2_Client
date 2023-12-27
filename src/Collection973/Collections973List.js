@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import './Collections973List.css';
-import { ALL_973COLLECTIONS_URL } from "../Constants/constants";
+import { ALL_973COLLECTIONS_URL, LOGIN_URL } from "../Constants/constants";
 
 
 const Collection973ListApp = () => {
@@ -17,13 +17,12 @@ const Collection973ListApp = () => {
             setAllowPage(true);
         } else {
             setAllowPage(false);
-            navigate("/login");
+            navigate(LOGIN_URL);
         }
     }, [navigate]);
 
     useEffect(() => {
         const fetch = async () => {
-          console.log(ALL_973COLLECTIONS_URL)
           try {
             const { data } = await axios.get(ALL_973COLLECTIONS_URL);
             setCollectionList(data);
